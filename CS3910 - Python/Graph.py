@@ -4,9 +4,14 @@
 
 
 class Graph:
-    vertices = {}
-    edges = []
-    edge_indices = {}
+    # vertices = {}
+    # edges = []
+    # edge_indices = {}
+
+    def __init__(self):
+        self.vertices = {}
+        self.edges = []
+        self.edge_indices = {}
 
     def add_vertex(self, vertex):
         if vertex not in self.vertices:
