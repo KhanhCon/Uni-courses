@@ -1,4 +1,6 @@
 import Graph, OrderedSet, itertools
+import csv
+import math
 from collections import deque
 
 cities = Graph.Graph()
@@ -26,17 +28,14 @@ route.add('D')
 
 # print(route.__len__())
 
-def getRouteCost(cities,route):
+def getRouteCost(city,route):
     routeCost = 0
     while route.__len__() > 1:
-             routeCost += cities.get_weight(route.pop(), route.peek())
+             routeCost += city.get_weight(route.pop(), route.peek())
     return routeCost
 
 
 # print(getRouteCost(cities,route))
-
-
-
 
 # def combinations(iterable, r):
 #     # combinations('ABCD', 2) --> AB AC AD BC BD CD
@@ -61,6 +60,7 @@ def getRouteCost(cities,route):
 def permutations(iterable, r=None):
     # permutations('ABCD', 2) --> AB AC AD BA BC BD CA CB CD DA DB DC
     # permutations(range(3)) --> 012 021 102 120 201 210
+
     pool = tuple(iterable)
     n = len(pool)
     r = n if r is None else r
@@ -83,13 +83,59 @@ def permutations(iterable, r=None):
         else:
             return
 
-def someRandomRoutes(cities):
-    return list(permutations(cities.vertices, 4))
+def generateRoutes(map,tourLength):
+    return list(permutations(map.vertices, tourLength))
 
 # print someRandomRoutes(cities)
 
-routes = someRandomRoutes(cities)
+# routes = someRandomRoutes(cities)
+#
+# for i in routes:
+#     print getRouteCost(cities,i)
 
-for i in routes:
-    print getRouteCost(cities,i)
+
+# data = {}
+
+def populateCities(city):
+    with open('ulysses16.csv', 'rb') as csvfile:
+        spamreader = csv.reader(csvfile)
+        next(spamreader, None)
+        next(spamreader, None)
+        reader = list(spamreader)
+        # print spamreader
+
+        for row in reader:
+            city.add_vertex(row[0])
+
+        for row in reader:
+            # print row
+            key = row[0]
+            x = float(row[1])
+            y = float(row[2])
+            # distances = []
+            for row2 in reader:
+                x0 = float(row2[1])
+                y0 = float(row2[2])
+                distance = math.sqrt(math.pow((x0-x),2)+math.pow((y0-y),2))
+                city.add_edge(key,row2[0],distance)
+            # data[key] = distances
+
+newCities = Graph.Graph()
+
+populateCities(newCities)
+newRoutes = generateRoutes(newCities,4)
+
+# shortestDistance = 1000000
+# for route in newRoutes:
+#     a = getRouteCost(newCities, route)
+#     if a < shortestDistance and a!=0:
+#          shortestDistance = a
+# print cities.get_weight('1','2')
+
+# print shortestDistance
+
+for route in newRoutes:
+       # if shortestDistance == getRouteCost(newCities,route):
+        print route
+        # break
 
