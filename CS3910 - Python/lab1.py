@@ -1,9 +1,9 @@
-import Graph, OrderedSet
+import Data
 import csv
 import math
 from collections import deque
 
-cities = Graph.Graph()
+cities = Data.Graph()
 
 cities.add_vertex('A')
 cities.add_vertex('B')
@@ -19,7 +19,7 @@ cities.add_edge('C','D',12)
 
 # cities.print_graph()
 
-route = OrderedSet.OrderedSet()
+route = Data.OrderedSet()
 
 route.add('B')
 route.add('A')
@@ -48,7 +48,7 @@ def permutations(iterable, r=None):
         return
     indices = list(range(n))
     cycles = list(range(n, n-r, -1))
-    yield OrderedSet.OrderedSet(pool[i] for i in indices[:r])
+    yield Data.OrderedSet(pool[i] for i in indices[:r])
     while n:
         for i in reversed(range(r)):
             cycles[i] -= 1
@@ -58,7 +58,7 @@ def permutations(iterable, r=None):
             else:
                 j = cycles[i]
                 indices[i], indices[-j] = indices[-j], indices[i]
-                yield OrderedSet.OrderedSet(pool[i] for i in indices[:r])
+                yield Data.OrderedSet(pool[i] for i in indices[:r])
                 break
         else:
             return
@@ -100,7 +100,7 @@ def populateCities(city):
                 city.add_edge(key,row2[0],distance)
             # data[key] = distances
 
-newCities = Graph.Graph()
+newCities = Data.Graph()
 
 populateCities(newCities)
 newRoutes = generateRoutes(newCities,4)
