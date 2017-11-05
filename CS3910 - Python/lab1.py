@@ -1,6 +1,7 @@
 import Data
 import csv
 import math
+from functools import reduce
 from collections import deque
 
 cities = Data.Graph()
@@ -19,24 +20,48 @@ cities.add_edge('C','D',12)
 
 # cities.print_graph()
 
-route = Data.OrderedSet()
+# route = Data.OrderedSet()
 
-route.add('B')
-route.add('A')
-route.add('C')
-route.add('D')
+# route.add(('B','A','C','D'))
+
+# route.add('B')
+# route.add('A')
+# route.add('C')
+# route.add('D')
+
+# print route
 
 # print(route.__len__())
 
-def getRouteCost(city,route):
-    routeCost = 0
-    while route.__len__() > 1:
-             routeCost += city.get_weight(route.pop(), route.peek())
-    return routeCost
+# def getRouteCost2(city,route):
+#     routeCost = 0
+#     while route.__len__() > 1:
+#              routeCost += city.get_weight(route.pop(), route.peek())
+#     return routeCost
 
+#
+# def getRouteCost2(city,route):
+#     # routeCost = 0
+#     # while route.__len__() > 1:
+#     #          routeCost += city.get_weight(route.pop(), route.peek()) (lambda x, y: city.get_weight(x, y))
+#    f = lambda x, y: city.get_weight(x, y)
+#    return reduce(city.get_weight, route)
 
+def getRouteCost(graph, route):
+    it = iter(route)
+    previous = next(it)
+    value = 0
+    for element in it:
+        value += graph.get_weight(previous, element)
+        previous = element
+    return value
 
+# print cities.get_weight('A','B')
 
+# print getRouteCost(cities,route)
+# print getRouteCost(cities,route)
+# print getRouteCost(cities,route)
+# print route
 def permutations(iterable, r=None):
     # permutations('ABCD', 2) --> AB AC AD BA BC BD CA CB CD DA DB DC
     # permutations(range(3)) --> 012 021 102 120 201 210
@@ -66,15 +91,6 @@ def permutations(iterable, r=None):
 def generateRoutes(map,tourLength):
     return list(permutations(map.vertices, tourLength))
 
-# print someRandomRoutes(cities)
-
-# routes = someRandomRoutes(cities)
-#
-# for i in routes:
-#     print getRouteCost(cities,i)
-
-
-# data = {}
 
 def populateCities(city):
     with open('ulysses16.csv', 'rb') as csvfile:
@@ -100,22 +116,27 @@ def populateCities(city):
                 city.add_edge(key,row2[0],distance)
             # data[key] = distances
 
-newCities = Data.Graph()
+# newCities = Data.Graph()
+#
+# populateCities(newCities)
+# newRoutes = generateRoutes(newCities,4)
 
-populateCities(newCities)
-newRoutes = generateRoutes(newCities,4)
+def findBestRoute(graph,routes):
+    shortestDistance = 100000
+    shortestRoute = None
+    for route in routes:
+        a = getRouteCost(graph, route)
+        if a < shortestDistance and a!=0:
+             shortestDistance = a
+             shortestRoute = route
+    return {'route':shortestRoute, 'distance':shortestDistance}
 
-# shortestDistance = 1000000
+
+# print findBestRoute(newCities,newRoutes)
+
+
 # for route in newRoutes:
-#     a = getRouteCost(newCities, route)
-#     if a < shortestDistance and a!=0:
-#          shortestDistance = a
-# print cities.get_weight('1','2')
-
-# print shortestDistance
-
-for route in newRoutes:
-       # if shortestDistance == getRouteCost(newCities,route):
-        print route
-        # break
+#        # if shortestDistance == getRouteCost(newCities,route):
+#         print route
+#         # break
 

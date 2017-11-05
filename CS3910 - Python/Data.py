@@ -36,6 +36,7 @@ class Graph:
     def get_weight(self, u, v):
        return self.edges[self.edge_indices[u]][self.edge_indices[v]]
 
+
     def print_graph(self):
         for v, i in sorted(self.edge_indices.items()):
             print v + ' '
@@ -64,6 +65,13 @@ class OrderedSet(collections.MutableSet):
             end = self.end
             curr = end[1]
             curr[2] = end[1] = self.map[key] = [key, curr, end]
+
+    def addList(self, listOfKeys):
+        for key in listOfKeys:
+            if key not in self.map:
+                end = self.end
+                curr = end[1]
+                curr[2] = end[1] = self.map[key] = [key, curr, end]
 
     def discard(self, key):
         if key in self.map:
