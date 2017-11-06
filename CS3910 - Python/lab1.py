@@ -122,17 +122,18 @@ def populateCities(city):
 # newRoutes = generateRoutes(newCities,4)
 
 def findBestRoute(graph,routes):
-    shortestDistance = 100000
-    shortestRoute = None
-    for route in routes:
-        a = getRouteCost(graph, route)
-        if a < shortestDistance and a!=0:
-             shortestDistance = a
-             shortestRoute = route
-    return {'route':shortestRoute, 'distance':shortestDistance}
+        shortestDistance = 100000
+        shortestRoute = None
+        for route in routes:
+            a = getRouteCost(graph, route)
+            if a < shortestDistance and a!=0:
+                 shortestDistance = a
+                 shortestRoute = route
+        return {'route': shortestRoute, 'distance': shortestDistance}
 
 
-# print findBestRoute(newCities,newRoutes)
+routes = generateRoutes(cities,4)
+print findBestRoute(cities,routes)
 
 
 # for route in newRoutes:
