@@ -1,6 +1,7 @@
 # class Vertex:
 #     def __init__(self, n):
 #         self.name = n
+from __future__ import print_function
 import collections
 
 
@@ -36,14 +37,12 @@ class Graph:
     def get_weight(self, u, v):
        return self.edges[self.edge_indices[u]][self.edge_indices[v]]
 
-
     def print_graph(self):
         for v, i in sorted(self.edge_indices.items()):
-            print v + ' '
+            print(v + ' ', end='')
             for j in range(len(self.edges)):
-                print self.edges[i][j],
-                print ' '
-
+                print(str(round(float(self.edges[i][j]), 2))+' ', end='')
+            print(' ')
 
 class OrderedSet(collections.MutableSet):
 

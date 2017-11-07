@@ -1,22 +1,24 @@
+from __future__ import print_function
 import Data
 import csv
 import math
+
 from functools import reduce
 from collections import deque
 
-cities = Data.Graph()
-
-cities.add_vertex('A')
-cities.add_vertex('B')
-cities.add_vertex('C')
-cities.add_vertex('D')
-
-cities.add_edge('A','B',20)
-cities.add_edge('A','C',42)
-cities.add_edge('A','D',35)
-cities.add_edge('B','C',30)
-cities.add_edge('B','D',34)
-cities.add_edge('C','D',12)
+# cities = Data.Graph()
+#
+# cities.add_vertex('A')
+# cities.add_vertex('B')
+# cities.add_vertex('C')
+# cities.add_vertex('D')
+#
+# cities.add_edge('A','B',20)
+# cities.add_edge('A','C',42)
+# cities.add_edge('A','D',35)
+# cities.add_edge('B','C',30)
+# cities.add_edge('B','D',34)
+# cities.add_edge('C','D',12)
 
 # cities.print_graph()
 
@@ -104,21 +106,22 @@ def populateCities(city):
             city.add_vertex(row[0])
 
         for row in reader:
-            # print row
             key = row[0]
             x = float(row[1])
             y = float(row[2])
             # distances = []
             for row2 in reader:
-                x0 = float(row2[1])
-                y0 = float(row2[2])
-                distance = math.sqrt(math.pow((x0-x),2)+math.pow((y0-y),2))
-                city.add_edge(key,row2[0],distance)
+                if row2[0] == key:
+                    distance = 0
+                else:
+                    x0 = float(row2[1])
+                    y0 = float(row2[2])
+                    distance = math.sqrt(math.pow((x0-x),2)+math.pow((y0-y),2))
+                    city.add_edge(key,row2[0],distance)
             # data[key] = distances
 
-# newCities = Data.Graph()
-#
-# populateCities(newCities)
+
+# print newCities.get_weight('9','2')
 # newRoutes = generateRoutes(newCities,4)
 
 def findBestRoute(graph,routes):
@@ -132,12 +135,16 @@ def findBestRoute(graph,routes):
         return {'route': shortestRoute, 'distance': shortestDistance}
 
 
-routes = generateRoutes(cities,4)
-print findBestRoute(cities,routes)
+# routes = generateRoutes(cities,4)
+# print findBestRoute(cities,routes)
 
+# newCities.print_graph()
 
 # for route in newRoutes:
 #        # if shortestDistance == getRouteCost(newCities,route):
 #         print route
 #         # break
 
+
+newCities = Data.Graph()
+populateCities(newCities)
