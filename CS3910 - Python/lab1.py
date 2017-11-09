@@ -50,12 +50,16 @@ from collections import deque
 #    return reduce(city.get_weight, route)
 
 def getRouteCost(graph, route):
+    item = route[0]
+    route = route.append(item)
     it = iter(route)
     previous = next(it)
     value = 0
     for element in it:
         value += graph.get_weight(previous, element)
         previous = element
+
+
     return value
 
 # print cities.get_weight('A','B')
@@ -89,18 +93,16 @@ def permutations(iterable, r=None):
                 break
         else:
             return
-
 def generateRoutes(map,tourLength):
     return list(permutations(map.vertices, tourLength))
 
 
-def populateCities(city):
-    with open('ulysses16.csv', 'rb') as csvfile:
+def populateCities(city,fileName='ulysses16.csv'):
+    with open(fileName, 'rb') as csvfile:
         spamreader = csv.reader(csvfile)
         next(spamreader, None)
         next(spamreader, None)
         reader = list(spamreader)
-        # print spamreader
 
         for row in reader:
             city.add_vertex(row[0])
@@ -146,5 +148,6 @@ def findBestRoute(graph,routes):
 #         # break
 
 
-newCities = Data.Graph()
-populateCities(newCities)
+TSP = Data.Graph()
+populateCities(TSP,'burma14.csv')
+print (getRouteCost(TSP,['2', '4', '6', '8', '10', '12', '14', '1', '3', '5', '7', '9', '11','13']))

@@ -16,18 +16,16 @@ def twoOpt(iterable):
     for element in xrange(len(iterable)):
         i = element
         for k in xrange(i+1,len(iterable)):
-            # if a*newRoute[0]<a*newRoute[-1]:
             yield swap(iterable, i, k)
-            # neighborHood.append(newRoute)
-    # return neighborHood
 
 def randomSearchInitialiser(graph):
     initializer = list(graph.vertices)
     random.shuffle(initializer)
+    # initializer = initializer.append(initializer[0])
     return {'distance':lab1.getRouteCost(graph,initializer),'route':initializer}
 
-def randomSearch(graph,time=5):
-    return timeTermination(randomSearchInitialiser, graph, time)
+def randomSearch(graph,time=5,printInterval=1):
+    return timeTermination(randomSearchInitialiser, graph, time,printInterval)
 
 def twoOptRandomSearch(graph):
     # initializer = random.sample(graph.vertices,len(graph.vertices))
@@ -64,12 +62,12 @@ def f(f_stop,time=0,printInterval=2):
         threading.Timer(printInterval, f, [f_stop,time+printInterval,printInterval]).start()
         print time
 
-def timeTermination(function,graph, seconds=10):
+def timeTermination(function,graph, seconds=10,printInterval=1):
     shortestDistance = 10000
     shortestRoute = None
     timeout = time.time() + seconds
     f_stop = threading.Event()
-    f(f_stop)
+    f(f_stop,printInterval=printInterval)
     while time.time()<timeout:
         result = function(graph)
         if shortestDistance>result["distance"]:
@@ -78,11 +76,13 @@ def timeTermination(function,graph, seconds=10):
     f_stop.set()
     return {'route': shortestRoute, 'distance': shortestDistance}
 
+TSP = Data.Graph()
+lab1.populateCities(TSP,'burma14.csv')
 
-print twoOptRandomSearch(lab1.newCities)
-print twoOptGreedySearch(lab1.newCities)
+# print twoOptRandomSearch(TSP)
+# print twoOptGreedySearch(TSP)
+print randomSearch(TSP,time=5,printInterval=1)
 
-print randomSearch(lab1.newCities)
 # print timeTermination(randomSearchInitialiser(), lab1.newCities, 5)
 # print random.shuffle(list(lab1.newCities.vertices))
 # print lab1.newCities.vertices
