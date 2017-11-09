@@ -61,7 +61,7 @@ def f(f_stop,time=0,printInterval=2):
 
     if not f_stop.is_set():
         # call f() again in 60 seconds
-        threading.Timer(printInterval, f, [f_stop,time+printInterval]).start()
+        threading.Timer(printInterval, f, [f_stop,time+printInterval,printInterval]).start()
         print time
 
 def timeTermination(function,graph, seconds=10):
