@@ -253,6 +253,6 @@ class PSO_TSP:
                     particle.cost_pbest_solution = cost_current_solution
 
 
-pso_tsp = PSO_TSP(lab1.TSP, iteration=1000, size_population=3, beta=1, alfa=1)
+pso_tsp = PSO_TSP(lab1.TSP, iteration=10000, size_population=3, beta=1, alfa=1)
 pso_tsp.run() # runs the PSO algorithm
 print('gbest: %s | cost: %f\n' % (pso_tsp.gbest.pbest, pso_tsp.gbest.cost_pbest_solution))

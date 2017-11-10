@@ -37,6 +37,9 @@ class Graph:
     def get_weight(self, u, v):
        return self.edges[self.edge_indices[u]][self.edge_indices[v]]
 
+    def set_weight(self,u,v,weight):
+        self.edges[self.edge_indices[u]][self.edge_indices[v]] = weight
+
     def print_graph(self):
         for v, i in sorted(self.edge_indices.items()):
             print(v + ' ', end='')

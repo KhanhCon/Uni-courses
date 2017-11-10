@@ -94,7 +94,7 @@ def generateRoutes(map,tourLength):
     return list(permutations(map.vertices, tourLength))
 
 
-def populateCities(city,fileName='ulysses16.csv'):
+def populateCities(city,fileName):
     with open(fileName, 'rb') as csvfile:
         spamreader = csv.reader(csvfile)
         next(spamreader, None)
