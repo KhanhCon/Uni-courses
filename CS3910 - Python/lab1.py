@@ -50,16 +50,13 @@ from collections import deque
 #    return reduce(city.get_weight, route)
 
 def getRouteCost(graph, route):
-    item = route[0]
-    route = route.append(item)
     it = iter(route)
     previous = next(it)
     value = 0
     for element in it:
         value += graph.get_weight(previous, element)
         previous = element
-
-
+    value += graph.get_weight(route[0],route[-1])
     return value
 
 # print cities.get_weight('A','B')
@@ -150,4 +147,4 @@ def findBestRoute(graph,routes):
 
 TSP = Data.Graph()
 populateCities(TSP,'burma14.csv')
-print (getRouteCost(TSP,['2', '4', '6', '8', '10', '12', '14', '1', '3', '5', '7', '9', '11','13']))
+# print (getRouteCost(TSP,['10', '8', '1', '2', '4', '14', '3', '6', '5', '12', '7', '13', '9', '11']))

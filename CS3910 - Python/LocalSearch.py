@@ -54,9 +54,6 @@ def twoOptGreedySearch(graph):
     return lab1.findBestRoute(graph,twoOpt(greedyInitialier(graph)))
 
 def f(f_stop,time=0,printInterval=2):
-    # do something here ..
-    # .
-
     if not f_stop.is_set():
         # call f() again in 60 seconds
         threading.Timer(printInterval, f, [f_stop,time+printInterval,printInterval]).start()
@@ -79,8 +76,8 @@ def timeTermination(function,graph, seconds=10,printInterval=1):
 TSP = Data.Graph()
 lab1.populateCities(TSP,'burma14.csv')
 
-# print twoOptRandomSearch(TSP)
-# print twoOptGreedySearch(TSP)
+print twoOptRandomSearch(TSP)
+print twoOptGreedySearch(TSP)
 print randomSearch(TSP,time=5,printInterval=1)
 
 # print timeTermination(randomSearchInitialiser(), lab1.newCities, 5)
