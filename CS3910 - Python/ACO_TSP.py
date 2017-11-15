@@ -1,5 +1,7 @@
+from __future__ import division
 from Data import Graph
 import csv,random,math,lab1
+
 class ACO:
     def __init__(self,graph):
         self.graph = graph
@@ -83,7 +85,7 @@ class ACO:
                 pheremone = self.pheromoneTrails.get_weight(city, currentCity)
                 inverseDistance = 1 / self.graph.get_weight(city, currentCity)
                 x = math.pow(inverseDistance, beta) * math.pow(pheremone, alpha)
-                prob = x/r
+                prob = x/float(r)
                 if highestProbability <= prob:
                     nextCity = city
         return nextCity
@@ -107,6 +109,6 @@ class ACO:
 
 aco = ACO(lab1.TSP)
 # print aco.graph.get_weight('6','11')
-print aco.run(1500)
+print aco.run(1000)
 
 # print lab1.getRouteCost(lab1.TSP, ['2', '4', '6', '8', '10', '12', '14', '1', '3', '5', '7', '9', '11', '13'])

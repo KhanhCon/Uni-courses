@@ -147,4 +147,4 @@ def findBestRoute(graph,routes):
 
 TSP = Data.Graph()
 populateCities(TSP,'burma14.csv')
-# print (getRouteCost(TSP,['10', '8', '1', '2', '4', '14', '3', '6', '5', '12', '7', '13', '9', '11']))
+# print (getRouteCost(TSP,['2', '4', '6', '8', '10', '12','14', '1', '3', '5', '7', '9', '11', '13']))
