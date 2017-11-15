@@ -34,8 +34,9 @@ def generateSolution(antennaArray):
         node = numpy.random.uniform(lowerBound, upperBound)
         while node == lowerBound:
             node = numpy.random.uniform(lowerBound, upperBound)
-        design.append(node)
-
+        # design.append(node)
+        point = bisect.bisect(design,node)
+        design[point:point]=[node]
         if node+antennaArray.MIN_SPACING>=ranges[-1]-antennaArray.MIN_SPACING:
             del ranges[-1]
 
@@ -51,6 +52,7 @@ def generateSolution(antennaArray):
 
     return {"design":design, "fail":fail,"total":fail+antennaArray.n_antennae-1}
 
+# antennaArray = AntennaArray.AntennaArray(5,90.0)
 # a = generateSolution(antennaArray)
 # print a
 # print antennaArray.is_valid(a["design"])
@@ -87,12 +89,12 @@ def randomSearch(antennaArray, seconds=10, printInterval=2):
 
 
 
-# def check():
-#     for i in range(100):
-#         if not antennaArray.is_valid(generateSolution(antennaArray)["design"]):
-#             print "Fail test"
-#     print "Test Passed: no invalid design generated"
+def check():
+    for i in range(100):
+        if not antennaArray.is_valid(generateSolution(antennaArray)["design"]):
+            print "Fail test"
+    print "Test Passed: no invalid design generated"
 
-
-antennaArray = AntennaArray.AntennaArray(5, 70.0)
-print randomSearch(antennaArray,seconds=5,printInterval=1)
+# check()
+# antennaArray = AntennaArray.AntennaArray(5, 70.0)
+# print randomSearch(antennaArray,seconds=5,printInterval=1)

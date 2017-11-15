@@ -48,7 +48,7 @@ class AntennaArray:
 
     def evaluate(self,design):
         if(len(design)!= self.n_antennae):
-            raise ValueError("AntennaArray::evaluate called on design of the wrong size. Expected: " + self.n_antennae +". Actual: " +len(design))
+            raise ValueError("AntennaArray::evaluate called on design of the wrong size. Expected: " + str(self.n_antennae) +". Actual: " +str(len(design)))
 
         if (not self.is_valid(design)):
             return float("inf")
