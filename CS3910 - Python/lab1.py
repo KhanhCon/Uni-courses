@@ -144,7 +144,7 @@ def findBestRoute(graph,routes):
 #         print route
 #         # break
 
-
-TSP = Data.Graph()
-populateCities(TSP,'burma14.csv')
-# print (getRouteCost(TSP,['2', '4', '6', '8', '10', '12','14', '1', '3', '5', '7', '9', '11', '13']))
+if __name__ == '__main__':
+    TSP = Data.Graph()
+    populateCities(TSP,'burma14.csv')
+    # print (getRouteCost(TSP,['2', '4', '6', '8', '10', '12','14', '1', '3', '5', '7', '9', '11', '13']))

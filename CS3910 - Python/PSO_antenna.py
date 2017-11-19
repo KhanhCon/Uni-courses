@@ -73,8 +73,9 @@ def PSO(antennaArray,iteration,swarmSize):
     print "Best position: "
     print {"GBest":GBest,"GBest_cost":GBest_cost,"test":antennaArray.evaluate(GBest)}
 
-antenna = AntennaArray.AntennaArray(5,70.0)
-PSO(antenna,iteration=500,swarmSize=5)
+if __name__ == '__main__':
+    antenna = AntennaArray.AntennaArray(5,70.0)
+    PSO(antenna,iteration=500,swarmSize=5)
 
 
 

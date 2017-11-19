@@ -78,7 +78,7 @@ class ACO:
 
         for j in range(0,len(array)-1):
             array[j+1] += array[j]
-        r = array[-1]
+        r = random.uniform(0,1)*array[-1]
         highestProbability = 0
         for city in self.graph.vertices:
              if city not in tabuList:
@@ -107,8 +107,11 @@ class ACO:
                 shortestCost = lab1.getRouteCost(self.graph,route)
         return {'best route':bestRoute,'cost':shortestCost}
 
-aco = ACO(lab1.TSP)
-# print aco.graph.get_weight('6','11')
-print aco.run(1000)
+if __name__ == '__main__':
+    TSP = Graph()
+    lab1.populateCities(TSP, 'burma14.csv')
+    aco = ACO(TSP)
+    # print aco.graph.get_weight('6','11')
+    print aco.run(1000)
 
-# print lab1.getRouteCost(lab1.TSP, ['2', '4', '6', '8', '10', '12', '14', '1', '3', '5', '7', '9', '11', '13'])
+    # print lab1.getRouteCost(lab1.TSP, ['2', '4', '6', '8', '10', '12', '14', '1', '3', '5', '7', '9', '11', '13'])

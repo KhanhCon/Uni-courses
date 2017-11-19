@@ -89,11 +89,11 @@ def randomSearch(antennaArray, seconds=10, printInterval=2):
 
 
 
-def check():
-    for i in range(100):
-        if not antennaArray.is_valid(generateSolution(antennaArray)["design"]):
-            print "Fail test"
-    print "Test Passed: no invalid design generated"
+# def check():
+#     for i in range(100):
+#         if not antennaArray.is_valid(generateSolution(antennaArray)["design"]):
+#             print "Fail test"
+#     print "Test Passed: no invalid design generated"
 
 # check()
 # antennaArray = AntennaArray.AntennaArray(5, 70.0)

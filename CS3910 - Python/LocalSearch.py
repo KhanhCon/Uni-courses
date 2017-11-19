@@ -73,12 +73,13 @@ def timeTermination(function,graph, seconds=10,printInterval=1):
     f_stop.set()
     return {'route': shortestRoute, 'distance': shortestDistance}
 
-TSP = Data.Graph()
-lab1.populateCities(TSP,'burma14.csv')
+if __name__ == '__main__':
+    TSP = Data.Graph()
+    lab1.populateCities(TSP,'burma14.csv')
 
-print twoOptRandomSearch(TSP)
-print twoOptGreedySearch(TSP)
-print randomSearch(TSP,time=5,printInterval=1)
+    print twoOptRandomSearch(TSP)
+    print twoOptGreedySearch(TSP)
+    print randomSearch(TSP,time=5,printInterval=1)
 
 # print timeTermination(randomSearchInitialiser(), lab1.newCities, 5)
 # print random.shuffle(list(lab1.newCities.vertices))
