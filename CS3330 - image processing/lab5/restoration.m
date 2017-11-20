@@ -9,9 +9,9 @@ mask = fspecial('average',7);
 box_filtered_img = filter2(mask,salt_img);
 gaussian_mask = fspecial('gaussian',7);
 gaussian_filtered_img = filter2(gaussian_mask,salt_img);
-
 filtered_img = medfilt2(salt_img,[5,5]); 
-%figure,image(filtered_img),axis off,colormap gray(256);
-%figure,image(box_filtered_img),axis off,colormap gray(256);
-figure,image(gaussian_filtered_img),axis off,colormap gray(256);
-figure,image(salt_img),axis off,colormap gray(256);
+
+figure,image(filtered_img),axis off,colormap gray(256),title('median');
+figure,image(box_filtered_img),axis off,colormap gray(256),title('box filter');
+figure,image(gaussian_filtered_img),axis off,colormap gray(256),title('restored image');
+figure,image(salt_img),axis off,colormap gray(256),title('gaussian image');

@@ -13,9 +13,9 @@ gau11 = filter2(fspecial('gaussian',11),salt_img);
 PSNR_gau11 = calculatePSNR(salt_img,gau11);
 
 x = 3:2:11;
-y = [PSNR_gau3,PSNR_gau5,PSNR_gau7,PSNR_gau9,PSNR_gau11];
+y1 = [PSNR_gau3,PSNR_gau5,PSNR_gau7,PSNR_gau9,PSNR_gau11];
 
-%figure,plot(x,y);
+figure,plot(x,y1);
 
 PSNR_box3 = calculatePSNR(salt_img,filter2(fspecial('average',3),salt_img));
 PSNR_box5 = calculatePSNR(salt_img,filter2(fspecial('average',5),salt_img));
@@ -33,5 +33,5 @@ PSNR_med9 = psnr(salt_img,medfilt2(salt_img,[9,9]));
 PSNR_med11 = psnr(medfilt2(salt_img,[11,11]),salt_img);
 
 y3 = [PSNR_med3,PSNR_med5,PSNR_med7,PSNR_med9,PSNR_med11];
-figure,plot(x,y3);
+figure,plot(x,y3,'-ro',x,y2,'-.b'),xlabel('dimension'),ylabel('PSNR'),legend('median','gau');
 
