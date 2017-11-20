@@ -75,7 +75,7 @@ def PSO(antennaArray,iteration,swarmSize):
 
 if __name__ == '__main__':
     antenna = AntennaArray.AntennaArray(5,70.0)
-    PSO(antenna,iteration=500,swarmSize=5)
+    PSO(antenna,iteration=50,swarmSize=5)
 
 
 
