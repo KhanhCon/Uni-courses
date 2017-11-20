@@ -13,5 +13,5 @@ filtered_img = medfilt2(salt_img,[5,5]);
 
 figure,image(filtered_img),axis off,colormap gray(256),title('median');
 figure,image(box_filtered_img),axis off,colormap gray(256),title('box filter');
-figure,image(gaussian_filtered_img),axis off,colormap gray(256),title('restored image');
-figure,image(salt_img),axis off,colormap gray(256),title('gaussian image');
+figure,image(gaussian_filtered_img),axis off,colormap gray(256),title('gaussian filter image');
+figure,image(salt_img),axis off,colormap gray(256),title('noised image');
