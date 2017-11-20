@@ -1,7 +1,7 @@
 function [ sharpen_img ] = sharpen_img( img )
 %SHARPEN_IMG Summary of this function goes here
 %   Detailed explanation goes here
-img = rgb2gray(img);
+%img = rgb2gray(img);
 
 laplacian = [0,1,0;1,-4,1;0,1,0];
 laplacian_img = filter2(laplacian,img);

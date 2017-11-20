@@ -124,10 +124,10 @@ def genetic_tsp(graph,iteration,population_size=50,mutation_rate=0.01):
 
 # print swaptest([1,2,3,4,5],[10,20,30,40,50],2)
 # print random.randint(0, 1)
-
-TSP = Data.Graph()
-populateCities(TSP,'burma14.csv')
-print(genetic_tsp(TSP,iteration=400,population_size=50,mutation_rate=0.01))
+if __name__ == '__main__':
+    TSP = Data.Graph()
+    populateCities(TSP,'burma14.csv')
+    print(genetic_tsp(TSP,iteration=400,population_size=50,mutation_rate=0.01))
 
 # print random_solutions(TSP,10)
 # print roullet_pick(TSP,random_solutions(TSP,10))

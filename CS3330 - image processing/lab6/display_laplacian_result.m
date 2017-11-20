@@ -1,6 +1,7 @@
 function [] = display_laplacian_result( img )
 %DISPLAY_LAPLACIAN_RESULT Summary of this function goes here
 %   Detailed explanation goes here
+
 img = rgb2gray(img);
 
 laplacian = [0,1,0;1,-4,1;0,1,0];
