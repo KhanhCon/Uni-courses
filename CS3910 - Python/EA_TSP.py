@@ -6,6 +6,13 @@ import numpy
 def random_solutions(graph, population_size):
     random_solution = []
     for i in range(0,population_size):
+
+        # position = i%len(graph.vertices)
+        # l = list(graph.vertices)
+        # route = [x for j, x in enumerate(l) if j != position]
+        # random.shuffle(route)
+        # route = [route[position]] + route
+
         route = list(graph.vertices)
         random.shuffle(route)
         random_solution.append(route)
@@ -26,6 +33,10 @@ def roullet_pick(graph, solutions):
     # print roullet_wheel
     parents = []
     random_list = numpy.random.uniform(0, 1, 2)
+    # random_list = []
+    # random_list.append(random.uniform(0, 1))
+    # random_list.append(random.uniform(0, 1))
+
     # prob1 = random.uniform(0, 1)
     # prob2 = random.uniform(0, 1)
 
@@ -127,7 +138,16 @@ def genetic_tsp(graph,iteration,population_size=50,mutation_rate=0.01):
 if __name__ == '__main__':
     TSP = Data.Graph()
     populateCities(TSP,'burma14.csv')
-    print(genetic_tsp(TSP,iteration=400,population_size=50,mutation_rate=0.01))
+    print(genetic_tsp(TSP,iteration=1000,population_size=50,mutation_rate=0.05))
+
+    # l = range(0,14)
+    # copy = [x for j, x in enumerate(l) if j != 4]
+    # print(copy)
+    #
+    # random.shuffle(copy)
+    # copy.append(l[4])
+    # print copy
+
 
 # print random_solutions(TSP,10)
 # print roullet_pick(TSP,random_solutions(TSP,10))
