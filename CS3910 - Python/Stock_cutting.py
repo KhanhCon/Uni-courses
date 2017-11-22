@@ -2,17 +2,30 @@ import random
 import time
 import numpy
 
+price = {10: 100, 13: 130, 15: 150}
+stock = (10, 13, 15)
+piece = [3,  3,  3,  3,  3,  4,  4,  5,  6,  6,  7,  7,  7,  7,  8,  8,  9,  10, 10, 10]
+        # [13, 13, 10, 13, 15, 15, 13, 15, 13, 15, 15, 15, 13, 10, 15, 10, 13, 10, 13, 10]
+#
+ # 10: 3,5,8,9,10 400
+# 13: 3,4,4,6,7,10,10 520
+# 15: 3,3,3,6,7,7,7,8 450
 
-price = {10:100,13:130,15:150}
-stock = (10,13,15)
-piece = [3,3,3,3,3,4,4,5,6,6,7,7,7,7,8,8,9,10,10,10]
+# 10.4: 10,  10,  10, 7,3,  7,3,  7,3,  6,4
+# 13.3: 9,3,  6,4,
+# 15.3: 7,3,5, 8,7 ,8,7
 
-
-price = {4300:86, 4250:85, 4150:83, 3950:79, 3800:68, 3700:66, 3550:64, 3500:63}
-stock = (4300, 4250, 4150, 3950, 3800, 3700, 3550, 3500)
-# piece = [2350, 2350, 2250, 2250, 2250, 2250, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2100, 2100, 2100, 2100, 2100, 2100, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050,
-# 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 1950,1950, 1950, 1950, 1950,  1900,1900, 1850,1850,1850,1850,1850,1850,1850,1850,1850, 1700, 1700,1700,1650,1650,1650,1650,1650,1650, 1350, 1350,1350,1350,1350,1350,1350,1350,1350,1350,1300, 1250, 1200, 1150, 1100, 1050]
-piece = [2350, 2350, 2250, 2250, 2250, 2250, 2200, 2200, 2200, 2200, 2100, 2100, 2100, 2100, 2100, 2100, 2100, 2100, 2100, 2100, 2100, 2100, 2100, 2100, 2100, 2050, 2050, 2050, 2050, 2050, 2050, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 1950, 1950, 1950, 1950, 1950, 1950, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1850, 1850, 1850, 1850, 1850, 1850, 1850, 1850, 1850, 1850, 1850, 1850, 1850, 1700, 1700, 1700, 1700, 1700, 1650, 1650, 1350, 1350, 1350, 1350, 1350, 1350, 1350, 1350, 1350, 1300, 1300, 1300, 1250, 1250, 1250, 1250, 1250, 1250, 1200, 1200, 1200, 1200, 1200, 1200, 1200, 1200, 1200, 1200, 1150, 1150, 1150, 1150, 1100, 1100, 1100, 1100, 1100, 1100, 1100, 1100, 1050, 1050, 1050]
+# price = {4300: 86, 4250: 85, 4150: 83, 3950: 79, 3800: 68, 3700: 66, 3550: 64, 3500: 63}
+# stock = (4300, 4250, 4150, 3950, 3800, 3700, 3550, 3500)
+# # piece = [2350, 2350, 2250, 2250, 2250, 2250, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2100, 2100, 2100, 2100, 2100, 2100, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050,
+# # 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 1950,1950, 1950, 1950, 1950,  1900,1900, 1850,1850,1850,1850,1850,1850,1850,1850,1850, 1700, 1700,1700,1650,1650,1650,1650,1650,1650, 1350, 1350,1350,1350,1350,1350,1350,1350,1350,1350,1300, 1250, 1200, 1150, 1100, 1050]
+# piece = [2350, 2350, 2250, 2250, 2250, 2250, 2200, 2200, 2200, 2200, 2100, 2100, 2100, 2100, 2100, 2100, 2100, 2100,
+#          2100, 2100, 2100, 2100, 2100, 2100, 2100, 2050, 2050, 2050, 2050, 2050, 2050, 2000, 2000, 2000, 2000, 2000,
+#          2000, 2000, 2000, 2000, 2000, 2000, 1950, 1950, 1950, 1950, 1950, 1950, 1900, 1900, 1900, 1900, 1900, 1900,
+#          1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1850, 1850, 1850, 1850, 1850, 1850, 1850, 1850, 1850,
+#          1850, 1850, 1850, 1850, 1700, 1700, 1700, 1700, 1700, 1650, 1650, 1350, 1350, 1350, 1350, 1350, 1350, 1350,
+#          1350, 1350, 1300, 1300, 1300, 1250, 1250, 1250, 1250, 1250, 1250, 1200, 1200, 1200, 1200, 1200, 1200, 1200,
+#          1200, 1200, 1200, 1150, 1150, 1150, 1150, 1100, 1100, 1100, 1100, 1100, 1100, 1100, 1100, 1050, 1050, 1050]
 
 
 def random_solution_old(stock, piece):
@@ -22,25 +35,28 @@ def random_solution_old(stock, piece):
     while len(copy_piece) > 0:
         random_stock = random.choice(stock)
         solution_pieces = []
-        while len(copy_piece)>0 and random_stock - sum(solution_pieces) >= min(copy_piece):
+        while len(copy_piece) > 0 and random_stock - sum(solution_pieces) >= min(copy_piece):
             random_piece = random.choice(copy_piece)
             if random_stock - sum(solution_pieces) >= random_piece:
                 solution_pieces.append(random_piece)
                 copy_piece.remove(random_piece)
-        solution.append({"length":random_stock,"solution_pieces":solution_pieces})
+        solution.append({"length": random_stock, "solution_pieces": solution_pieces})
     return solution
+
 
 def random_population_old(population_size, stock, piece):
     population = []
-    for i in range(0,population_size):
+    for i in range(0, population_size):
         population.append(random_solution_old(stock, piece))
     return population
+
 
 def solution_cost_old(solution, price):
     cost = 0
     for i in solution:
         cost += price[i["length"]]
     return cost
+
 
 # print(solution_cost(random_solution(stock,piece),price))
 
@@ -70,16 +86,31 @@ def solution_cost_old(solution, price):
 
 def random_solution(stock, piece):
     solution = [None] * len(piece)
-    for i in xrange(0,len(piece)):
+    for i in xrange(0, len(piece)):
         solution[i] = random.choice(stock)
 
     return solution
 
+
 def random_population(population_size, stock, piece):
     population = []
-    for i in range(0,population_size):
+    for i in range(0, population_size):
         population.append(random_solution(stock, piece))
     return population
+
+
+def uniform_crossover(parent):
+    children = [[None] * len(parent[0]), [None] * len(parent[0])]
+    for i in range(0, len(parent[0])):
+        if random.uniform(0, 1) < 0.5:
+            children[0][i] = parent[0][i]
+            children[1][i] = parent[1][i]
+        else:
+            children[1][i] = parent[0][i]
+            children[0][i] = parent[1][i]
+
+    return children
+
 
 def single_point_crossover(parent):
     cross_point = random.randint(1, len(parent[0]) - 1)
@@ -97,14 +128,14 @@ def single_point_crossover(parent):
     # print route2
     return children
 
-def mutation(parent,stock):
 
+def mutation(parent, stock):
     child = []
-    child[:]=parent[:]
+    child[:] = parent[:]
 
     random_index = random.randint(0, len(parent) - 1)
 
-    ranl = random.sample(xrange(0,len(stock)),2)
+    ranl = random.sample(xrange(0, len(stock)), 2)
 
     if child[random_index] != stock[ranl[0]]:
         child[random_index] = stock[ranl[0]]
@@ -112,18 +143,54 @@ def mutation(parent,stock):
         child[random_index] = stock[ranl[1]]
     return child
 
+
+def scramble_mutation(parent, stock):
+    child = []
+    child[:] = parent[:]
+
+    random_indexes = random.sample(xrange(0, len(child) - 1), 2)
+
+    # ranl = random.sample(xrange(0, len(stock)), 2)
+
+    for i in xrange(random_indexes[0], random_indexes[1]):
+        ranl = random.randint(0, len(stock) - 1)
+        child[i] = stock[ranl]
+
+    # if child[random_index] != stock[ranl[0]]:
+    #     child[random_index] = stock[ranl[0]]
+    # else:
+    #     child[random_index] = stock[ranl[1]]
+    return child
+
+
+def swap(list, i, k):
+    newList = list[:]
+    newList[i:k:k - i] = list[k:i:-(k - i)]
+    newList[k:i:-(k - i)] = list[i:k:k - i]
+    return newList
+
+
+def twoOpt(iterable):
+    # a = 1 if iterable[0]<iterable[-1] else -1
+    neighborHood = []
+    for element in xrange(len(iterable)):
+        i = element
+        for k in xrange(i + 1, len(iterable)):
+            neighborHood.append(swap(iterable, i, k))
+    return neighborHood
+
 # print random_solution_2(stock,piece)
 
 [[8], [7, 5, 3, 6, 3, 7], [6, 7, 3, 4, 8, 3, 9, 3, 10, 4, 10, 10, 7]]
 [[9, 3, 5, 3, 6, 4, 4], [3, 10, 8, 7, 6, 8], [3, 7, 3, 10, 7, 7, 10]]
 
-[3,  3,  3,  3,  3,  4,  4,  5,  6,  6,  7,  7,  7,  7,  8,  8,  9,  10, 10, 10]
+[3, 3, 3, 3, 3, 4, 4, 5, 6, 6, 7, 7, 7, 7, 8, 8, 9, 10, 10, 10]
 [15, 13, 15, 15, 15, 15, 15, 13, 10, 13, 13, 13, 15, 15, 10, 15, 15, 15, 15, 15]
 
+[13, 13, 15, 15, 15, 15, 15, 13, 13, 15, 13, 13, 15, 15, 10, 15, 15, 15, 15, 15]
 
-[13,13,15,15,15,15,15,13,13,15,13,13,15,15,10,15,15,15,15,15]
+[10, 10, 13, 15, 15, 10, 10, 10, 10, 13, 13, 15, 15, 15, 13, 15, 10, 13, 15, 15]
 
-[10,10,13,15,15,10,10,10,10,13,13,15,15,15,13,15,10,13,15,15]
 
 # for i in pmx_cross_over([[13,13,15,15,15,15,15,13,13,15,13,13,15,15,10,15,15,15,15,15],[10,10,13,15,15,10,10,10,10,13,13,15,15,15,13,15,10,13,15,15]]):
 #     print i
@@ -132,36 +199,68 @@ def mutation(parent,stock):
 # 15: 3+3+3+3+4+4+7+7+8+9+10+10+10=81 6
 
 # greedy evaluate
-def evaluate(stock,piece,price,solution):
+def evaluate2(stock, piece, price, solution):
     dict = {}
     cost = 0
     for s in stock:
         dict[s] = 0
-        for i in xrange(0,len(solution)):
+        for i in xrange(0, len(solution)):
             if solution[i] == s:
                 dict[s] = dict[s] + piece[i]
     for key in dict:
-        if dict[key]%key == 0:
-            cost += (dict[key]/key)*price[key]
+        if dict[key] % key == 0:
+            cost += (dict[key] / key) * price[key]
         else:
-            cost += (dict[key]/key+1)*price[key]
+            cost += (dict[key] / key + 1) * price[key]
     return cost
 
+def evaluate(stock, piece, price, solution):
+    dict = {}
+    cost = 0
+    for s in stock:
+        dict[s] = []
+        for i in xrange(0, len(solution)):
+            if solution[i] == s:
+                dict[s].append(piece[i])
+    print dict
+    for key,value in dict.iteritems():
+        # print key
+        if not value:
+            continue
+        sum_so_far = 0
+        num_of_stock = 0
+        small = value[0]
+        length = len(value)
+        # print '--' + str(key)
+        for i in xrange(0,length):
+            sum_so_far += value[i]
+            if i == length-1:
+                num_of_stock += 1
+            elif sum_so_far + value[i+1] >key:
+                # print sum_so_far
+                sum_so_far = 0
+                num_of_stock += 1
+        print 'num stock: ' + str(num_of_stock)
+        cost += num_of_stock*price[key]
 
-def tournament_selection(stock,piece, price, population):
+        # if dict[key] % key == 0:
+        #     cost += (dict[key] / key) * price[key]
+        # else:
+        #     cost += (dict[key] / key + 1) * price[key]
+    return cost
 
-    tournament_population_size = random.randint(10,20)
-    tournament_population = random.sample(population,tournament_population_size)
+def tournament_selection(stock, piece, price, population):
+    tournament_population_size = random.randint(10, 20)
+    tournament_population = random.sample(population, tournament_population_size)
 
     m1, m2 = float('inf'), float('inf')
     for x in tournament_population:
-
-        if evaluate(stock,piece, price, x) <= m1:
+        if evaluate(stock, piece, price, x) <= m1:
             m1, m2 = x, m1
-        elif evaluate(stock,piece, price, x) < m2:
+        elif evaluate(stock, piece, price, x) < m2:
             m2 = x
 
-    return [m1,m2]
+    return [m1, m2]
 
 
 def roullet_pick(stock, piece, price, population):
@@ -176,17 +275,14 @@ def roullet_pick(stock, piece, price, population):
     total = 0
     roullet_wheel = []
     for solution in population:
-
-        fitness = evaluate(stock,piece,price,solution)
+        fitness = evaluate(stock, piece, price, solution)
         roullet_wheel.append(total + fitness)
         total += fitness
 
-
-
     sum_so_far = 0
     for key in population:
-        sum_so_far += evaluate(stock,piece,price,solution)
-        roullet_wheel.append(sum_so_far/total)
+        sum_so_far += evaluate(stock, piece, price, solution)
+        roullet_wheel.append(sum_so_far / total)
     # print roullet_wheel
     parents = []
     random_list = numpy.random.uniform(0, 1, 2)
@@ -223,39 +319,47 @@ def roullet_pick(stock, piece, price, population):
 
 
 def genetic_stock_cutting(stock, piece, price, iteration, population_size=50, mutation_rate=0.01):
-    print "running EA..."
+    print "running EA_stock_cutting..."
     mutation_rate = mutation_rate
-    population = random_population(population_size,stock,piece)
+    population = random_population(population_size, stock, piece)
+
     # print population
-    for i in range(0,iteration):
+    # while lowest > 3999:
+    for i in range(0, iteration):
         # print population
         newGen = []
+
         while len(newGen) < population_size:
-        # for i in xrange(0,population_size):
-            prob = random.uniform(0,1)
+            # while lowest > 3999:
+
+            # for i in xrange(0,population_size):
+            prob = random.uniform(0, 1)
             if prob < mutation_rate:
-                index = random.randint(0,len(population)-1)
-                newGen.append(mutation(population[index],stock))
+                index = random.randint(0, len(population) - 1)
+                newGen.append(scramble_mutation(population[index], stock))
             else:
                 # print population
-                parents = tournament_selection(stock,piece,price,population)
+                parents = tournament_selection(stock, piece, price, population)
                 # print parents
                 # population.remove(parents[0])
                 # if parents[1] in population:
                 #     population.remove(parents[1])
                 # print parents
-                children = single_point_crossover(parents)
+                children = uniform_crossover(parents)
                 newGen.append(children[0])
                 if children[0] != children[1]:
                     newGen.append(children[1])
-        population[:] = newGen [:]
-
+        population[:] = newGen[:]
+    best = []
     lowest = 10000
     for i in population:
-        cost = evaluate(stock,piece,price,i)
-        if cost <lowest:
-            lowest = cost
-
+        for j in twoOpt(i):
+            cost = evaluate(stock, piece, price, j)
+            if cost < lowest:
+                best = j
+                lowest = cost
+    print best
+    # print evaluate(stock, piece, price, best)
     return lowest
 
 
@@ -266,7 +370,9 @@ start_time = time.time()
 #
 # print mutation([15, 13, 15, 15, 15, 15, 15, 13, 10, 13, 13, 13, 15, 15, 10, 15, 15, 15, 15, 15],stock)
 
-print genetic_stock_cutting(stock,piece,price,iteration=2000, population_size=200, mutation_rate=0.5)
+# print genetic_stock_cutting(stock, piece, price, iteration=500, population_size=100, mutation_rate=0.01)
+print (evaluate(stock,piece,price,[10, 10, 13, 13, 15, 10, 15, 10, 10, 10, 15, 10, 15, 13, 10, 15, 13, 10, 13, 10]))
 
 print("--- %s seconds ---" % (time.time() - start_time))
 # print roullet_pick(stock,piece,price,[[10, 13, 13, 10, 15, 15, 13, 13, 15, 10, 15, 15, 15, 13, 15, 15, 15, 10, 15, 15], [10, 13, 13, 10, 15, 15, 13, 13, 15, 10, 15, 13, 15, 13, 15, 15, 15, 10, 15, 15], [10, 13, 13, 10, 15, 15, 13, 13, 15, 10, 15, 13, 15, 13, 15, 15, 15, 10, 15, 15], [10, 13, 13, 10, 15, 15, 13, 13, 15, 10, 15, 13, 15, 13, 15, 15, 15, 10, 15, 15]])
+# print uniform_crossover([[0,1,2,3],[4,5,6,7]])
