@@ -156,10 +156,6 @@ def scramble_mutation(parent, stock):
         ranl = random.randint(0, len(stock) - 1)
         child[i] = stock[ranl]
 
-    # if child[random_index] != stock[ranl[0]]:
-    #     child[random_index] = stock[ranl[0]]
-    # else:
-    #     child[random_index] = stock[ranl[1]]
     return child
 
 
