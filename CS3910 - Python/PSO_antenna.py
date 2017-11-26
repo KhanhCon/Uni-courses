@@ -4,7 +4,7 @@ from ContinuousRandomSearch import generateSolution
 
 class Particle:
     def __init__(self, antennaArray, position):
-        # current solution
+        # current geno1
         self.antennaArray = antennaArray
         self.position = position # current positon
         self.PBest = position # personal best position

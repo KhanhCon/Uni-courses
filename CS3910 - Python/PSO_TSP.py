@@ -17,25 +17,25 @@
 #         # r2 = numpy.random.uniform(0.0, 1.0)
 #         # self.velocity = self.INERTIAL*self.velocity + self.COGNITIVE*r1*(self.bestPosition["fitness"]-self.position["fitness"])+self.SOCIAL*r2*(globalBest["fitness"]-self.position["fitness"])
 #         newSolution = []
-#         for i in self.position["solution"]:
+#         for i in self.position["geno1"]:
 #             newSolution.append(i+self.INERTIAL*self.velocity + self.COGNITIVE*numpy.random.uniform(0.0, 1.0)*(self.bestPosition["fitness"]-self.position["fitness"])+self.SOCIAL*numpy.random.uniform(0.0, 1.0)*(globalBest["fitness"]-self.position["fitness"]))
 #
 #         newFitness = antennaArray.evaluate(newSolution)
 #         while not antennaArray.is_valid(newSolution):
-#             for i in self.position["solution"]:
+#             for i in self.position["geno1"]:
 #                 newSolution.append(i + self.INERTIAL*self.velocity + self.COGNITIVE*numpy.random.uniform(0.0, 1.0)*(self.bestPosition["fitness"]-self.position["fitness"])+self.SOCIAL*numpy.random.uniform(0.0, 1.0)*(globalBest["fitness"]-self.position["fitness"]))
 #
-#         if (newFitness > antennaArray.evaluate(self.bestPosition["solution"])):
-#             self.bestPosition["solution"] = newSolution
+#         if (newFitness > antennaArray.evaluate(self.bestPosition["geno1"])):
+#             self.bestPosition["geno1"] = newSolution
 #             self.bestPosition["fitness"] = antennaArray.evaluate(newSolution)
-#         self.position["solution"] = newSolution
+#         self.position["geno1"] = newSolution
 #         self.position["fitness"] = antennaArray.evaluate(newSolution)
 #
 #
 # def getGlobalBest(antennaArray,swarm):
-#     globalBest = {"solution":[],"fitness":0.0}
+#     globalBest = {"geno1":[],"fitness":0.0}
 #     for paritcle in swarm:
-#             globalBest["solution"] = paritcle.bestPosition["solution"]
+#             globalBest["geno1"] = paritcle.bestPosition["geno1"]
 #             globalBest["fitness"] = paritcle.bestPosition["fitness"]
 #     return globalBest
 #
@@ -47,7 +47,7 @@
 #     for i in range(0,antennaArray.n_antennae):
 #         velocity = numpy.random.uniform(0.0,antennaArray.n_antennae/2)
 #         design = ContinuousRandomSearch.generateSolution(antennaArray)["design"]
-#         position = {"solution":design,"fitness":antennaArray.evaluate(design)}
+#         position = {"geno1":design,"fitness":antennaArray.evaluate(design)}
 #         Swarm.append(Particle(velocity,position))
 #         # print 1
 #
@@ -77,10 +77,10 @@ import lab1
 
 class Particle:
     def __init__(self, solution, cost):
-        # current solution
+        # current geno1
         self.solution = solution
 
-        # best solution (fitness) it has achieved so far
+        # best geno1 (fitness) it has achieved so far
         self.pbest = solution
 
         # set costs
@@ -107,27 +107,27 @@ class Particle:
     # def getVelocity(self):
     #     return self.velocity
 
-    # set solution
-    # def setCurrentSolution(self, solution):
-    #     self.solution = solution
+    # set geno1
+    # def setCurrentSolution(self, geno1):
+    #     self.geno1 = geno1
 
-    # gets solution
+    # gets geno1
     # def getCurrentSolution(self):
-    #     return self.solution
+    #     return self.geno1
 
-    # set cost pbest solution
+    # set cost pbest geno1
     # def setCostPBest(self, cost):
     #     self.cost_pbest_solution = cost
 
-    # gets cost pbest solution
+    # gets cost pbest geno1
     # def getCostPBest(self):
     #     return self.cost_pbest_solution
 
-    # set cost current solution
+    # set cost current geno1
     # def setCostCurrentSolution(self, cost):
     #     self.cost_current_solution = cost
 
-    # gets cost current solution
+    # gets cost current geno1
     # def getCostCurrentSolution(self):
     #     return self.cost_current_solution
 
@@ -182,7 +182,7 @@ class PSO_TSP:
 
         print('Showing particles...\n')
         for particle in self.particles:
-            print('pbest: %s\t|\tcost pbest: %d\t|\tcurrent solution: %s\t|\tcost current solution: %d' \
+            print('pbest: %s\t|\tcost pbest: %d\t|\tcurrent geno1: %s\t|\tcost current geno1: %d' \
                   % (str(particle.getPBest()), particle.getCostPBest(), str(particle.getCurrentSolution()),
                      particle.getCostCurrentSolution()))
         print('')
@@ -197,9 +197,9 @@ class PSO_TSP:
 
                 particle.velocity[:]  # cleans the speed of the particle
                 temp_velocity = []
-                solution_gbest = copy.copy(self.gbest.pbest)  # gets solution of the gbest
-                solution_pbest = particle.pbest[:]  # copy of the pbest solution
-                solution_particle = particle.solution[:]  # gets copy of the current solution of the particle
+                solution_gbest = copy.copy(self.gbest.pbest)  # gets geno1 of the gbest
+                solution_pbest = particle.pbest[:]  # copy of the pbest geno1
+                solution_particle = particle.solution[:]  # gets copy of the current geno1 of the particle
 
                 # generates all swap operators to calculate (pbest - x(t-1))
                 for i in range(len(self.graph.vertices)):
@@ -232,7 +232,7 @@ class PSO_TSP:
                 # updates velocity
                 particle.velocity = temp_velocity
 
-                # generates new solution for particle
+                # generates new geno1 for particle
                 for swap_operator in temp_velocity:
                     if random.random() <= swap_operator[2]:
                         # makes the swap
@@ -240,14 +240,14 @@ class PSO_TSP:
                         solution_particle[swap_operator[0]] = solution_particle[swap_operator[1]]
                         solution_particle[swap_operator[1]] = aux
 
-                # updates the current solution
+                # updates the current geno1
                 particle.solution = solution_particle
-                # gets cost of the current solution
+                # gets cost of the current geno1
                 cost_current_solution = lab1.getRouteCost(self.graph,solution_particle)
-                # updates the cost of the current solution
+                # updates the cost of the current geno1
                 particle.cost_current_solution = cost_current_solution
 
-                # checks if current solution is pbest solution
+                # checks if current geno1 is pbest geno1
                 if cost_current_solution < particle.cost_pbest_solution:
                     particle.pbest = solution_particle
                     particle.cost_pbest_solution = cost_current_solution

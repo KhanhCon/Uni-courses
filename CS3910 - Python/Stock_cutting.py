@@ -64,7 +64,7 @@ def solution_cost_old(solution, price):
 # print(random_population(10,stock,piece))
 
 # def random_solution(stock, piece):
-#     solution = [None] * len(stock)
+#     geno1 = [None] * len(stock)
 #     copy_piece = []
 #     copy_piece[:] = piece[:]
 #     while len(copy_piece) > 0:
@@ -76,12 +76,12 @@ def solution_cost_old(solution, price):
 #             if random_stock - sum(solution_pieces) >= random_piece:
 #                 solution_pieces.append(random_piece)
 #                 copy_piece.remove(random_piece)
-#         if solution[random_index] is not None:
-#             solution[random_index] = solution[random_index] + solution_pieces
+#         if geno1[random_index] is not None:
+#             geno1[random_index] = geno1[random_index] + solution_pieces
 #         else:
-#             solution[random_index] = solution_pieces
-#         # solution.append({"length": random_stock, "solution_pieces": solution_pieces})
-#     return solution
+#             geno1[random_index] = solution_pieces
+#         # geno1.append({"length": random_stock, "solution_pieces": solution_pieces})
+#     return geno1
 
 
 def random_solution(stock, piece):
