@@ -15,11 +15,11 @@ piece = [3,  3,  3,  3,  3,  4,  4,  5,  6,  6,  7,  7,  7,  7,  8,  8,  9,  10,
 # 13.3: 9,3,  6,4,
 # 15.3: 7,3,5, 8,7 ,8,7
 
-# price = {4300: 86, 4250: 85, 4150: 83, 3950: 79, 3800: 68, 3700: 66, 3550: 64, 3500: 63}
-# stock = (4300, 4250, 4150, 3950, 3800, 3700, 3550, 3500)
-# # piece = [2350, 2350, 2250, 2250, 2250, 2250, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2100, 2100, 2100, 2100, 2100, 2100, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050,
+# PRICE = {4300: 86, 4250: 85, 4150: 83, 3950: 79, 3800: 68, 3700: 66, 3550: 64, 3500: 63}
+# STOCK = (4300, 4250, 4150, 3950, 3800, 3700, 3550, 3500)
+# # PIECE = [2350, 2350, 2250, 2250, 2250, 2250, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2100, 2100, 2100, 2100, 2100, 2100, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050,
 # # 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 1950,1950, 1950, 1950, 1950,  1900,1900, 1850,1850,1850,1850,1850,1850,1850,1850,1850, 1700, 1700,1700,1650,1650,1650,1650,1650,1650, 1350, 1350,1350,1350,1350,1350,1350,1350,1350,1350,1300, 1250, 1200, 1150, 1100, 1050]
-# piece = [2350, 2350, 2250, 2250, 2250, 2250, 2200, 2200, 2200, 2200, 2100, 2100, 2100, 2100, 2100, 2100, 2100, 2100,
+# PIECE = [2350, 2350, 2250, 2250, 2250, 2250, 2200, 2200, 2200, 2200, 2100, 2100, 2100, 2100, 2100, 2100, 2100, 2100,
 #          2100, 2100, 2100, 2100, 2100, 2100, 2100, 2050, 2050, 2050, 2050, 2050, 2050, 2000, 2000, 2000, 2000, 2000,
 #          2000, 2000, 2000, 2000, 2000, 2000, 1950, 1950, 1950, 1950, 1950, 1950, 1900, 1900, 1900, 1900, 1900, 1900,
 #          1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1850, 1850, 1850, 1850, 1850, 1850, 1850, 1850, 1850,
@@ -58,18 +58,18 @@ def solution_cost_old(solution, price):
     return cost
 
 
-# print(solution_cost(random_solution(stock,piece),price))
+# print(solution_cost(random_solution(STOCK,PIECE),PRICE))
 
 # print(range(0,10))
-# print(random_population(10,stock,piece))
+# print(random_population(10,STOCK,PIECE))
 
-# def random_solution(stock, piece):
-#     geno1 = [None] * len(stock)
+# def random_solution(STOCK, PIECE):
+#     geno1 = [None] * len(STOCK)
 #     copy_piece = []
-#     copy_piece[:] = piece[:]
+#     copy_piece[:] = PIECE[:]
 #     while len(copy_piece) > 0:
-#         random_index = random.randint(0,len(stock)-1)
-#         random_stock = stock[random_index]
+#         random_index = random.randint(0,len(STOCK)-1)
+#         random_stock = STOCK[random_index]
 #         solution_pieces = []
 #         while len(copy_piece) > 0 and random_stock - sum(solution_pieces) >= min(copy_piece):
 #             random_piece = random.choice(copy_piece)
@@ -150,7 +150,7 @@ def scramble_mutation(parent, stock):
 
     random_indexes = random.sample(xrange(0, len(child) - 1), 2)
 
-    # ranl = random.sample(xrange(0, len(stock)), 2)
+    # ranl = random.sample(xrange(0, len(STOCK)), 2)
 
     for i in xrange(random_indexes[0], random_indexes[1]):
         ranl = random.randint(0, len(stock) - 1)
@@ -175,7 +175,7 @@ def twoOpt(iterable):
             neighborHood.append(swap(iterable, i, k))
     return neighborHood
 
-# print random_solution_2(stock,piece)
+# print random_solution_2(STOCK,PIECE)
 
 [[8], [7, 5, 3, 6, 3, 7], [6, 7, 3, 4, 8, 3, 9, 3, 10, 4, 10, 10, 7]]
 [[9, 3, 5, 3, 6, 4, 4], [3, 10, 8, 7, 6, 8], [3, 7, 3, 10, 7, 7, 10]]
@@ -236,13 +236,13 @@ def evaluate(stock, piece, price, solution):
                 # print sum_so_far
                 sum_so_far = 0
                 num_of_stock += 1
-        print 'num stock: ' + str(num_of_stock)
+        print 'num STOCK: ' + str(num_of_stock)
         cost += num_of_stock*price[key]
 
         # if dict[key] % key == 0:
-        #     cost += (dict[key] / key) * price[key]
+        #     cost += (dict[key] / key) * PRICE[key]
         # else:
-        #     cost += (dict[key] / key + 1) * price[key]
+        #     cost += (dict[key] / key + 1) * PRICE[key]
     return cost
 
 def tournament_selection(stock, piece, price, population):
@@ -355,20 +355,20 @@ def genetic_stock_cutting(stock, piece, price, iteration, population_size=50, mu
                 best = j
                 lowest = cost
     print best
-    # print evaluate(stock, piece, price, best)
+    # print evaluate(STOCK, PIECE, PRICE, best)
     return lowest
 
 
 start_time = time.time()
 # print single_point_crossover([[13,13,15,15,15,15,15,13,13,15,13,13,15,15,10,15,15,15,15,15],[10,10,13,15,15,10,10,10,10,13,13,15,15,15,13,15,10,13,15,15]])
 #
-# print evaluate([15, 13, 15, 15, 15, 15, 15, 13, 10, 13, 13, 13, 15, 15, 10, 15, 15, 15, 15, 15],price,piece,stock)
+# print evaluate([15, 13, 15, 15, 15, 15, 15, 13, 10, 13, 13, 13, 15, 15, 10, 15, 15, 15, 15, 15],PRICE,PIECE,STOCK)
 #
-# print mutation([15, 13, 15, 15, 15, 15, 15, 13, 10, 13, 13, 13, 15, 15, 10, 15, 15, 15, 15, 15],stock)
+# print mutation([15, 13, 15, 15, 15, 15, 15, 13, 10, 13, 13, 13, 15, 15, 10, 15, 15, 15, 15, 15],STOCK)
 
-# print genetic_stock_cutting(stock, piece, price, iteration=500, population_size=100, mutation_rate=0.01)
+# print genetic_stock_cutting(STOCK, PIECE, PRICE, iteration=500, population_size=100, mutation_rate=0.01)
 print (evaluate(stock,piece,price,[10, 10, 13, 13, 15, 10, 15, 10, 10, 10, 15, 10, 15, 13, 10, 15, 13, 10, 13, 10]))
 
 print("--- %s seconds ---" % (time.time() - start_time))
-# print roullet_pick(stock,piece,price,[[10, 13, 13, 10, 15, 15, 13, 13, 15, 10, 15, 15, 15, 13, 15, 15, 15, 10, 15, 15], [10, 13, 13, 10, 15, 15, 13, 13, 15, 10, 15, 13, 15, 13, 15, 15, 15, 10, 15, 15], [10, 13, 13, 10, 15, 15, 13, 13, 15, 10, 15, 13, 15, 13, 15, 15, 15, 10, 15, 15], [10, 13, 13, 10, 15, 15, 13, 13, 15, 10, 15, 13, 15, 13, 15, 15, 15, 10, 15, 15]])
+# print roullet_pick(STOCK,PIECE,PRICE,[[10, 13, 13, 10, 15, 15, 13, 13, 15, 10, 15, 15, 15, 13, 15, 15, 15, 10, 15, 15], [10, 13, 13, 10, 15, 15, 13, 13, 15, 10, 15, 13, 15, 13, 15, 15, 15, 10, 15, 15], [10, 13, 13, 10, 15, 15, 13, 13, 15, 10, 15, 13, 15, 13, 15, 15, 15, 10, 15, 15], [10, 13, 13, 10, 15, 15, 13, 13, 15, 10, 15, 13, 15, 13, 15, 15, 15, 10, 15, 15]])
 # print uniform_crossover([[0,1,2,3],[4,5,6,7]])
