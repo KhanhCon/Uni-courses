@@ -78,14 +78,19 @@ class ACO:
 
         for j in range(0,len(array)-1):
             array[j+1] += array[j]
-        r = random.uniform(0,1)*array[-1]
+        r = array[-1]
         highestProbability = 0
         for city in self.graph.vertices:
              if city not in tabuList:
                 pheremone = self.pheromoneTrails.get_weight(city, currentCity)
-                inverseDistance = 1 / self.graph.get_weight(city, currentCity)
+                inverseDistance = 1/self.graph.get_weight(city, currentCity)
                 x = math.pow(inverseDistance, beta) * math.pow(pheremone, alpha)
-                prob = x/float(r)
+                # prob = x / float(r)
+                try:
+                    prob = x/float(r)
+                except ZeroDivisionError:
+                    print x
+                    print r
                 if highestProbability <= prob:
                     nextCity = city
         return nextCity

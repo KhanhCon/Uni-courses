@@ -342,8 +342,8 @@ def print_solution(stock, piece, price, solution):
         print "%i: %s" % (key, value)
         print "%i: %s" % (key, bins)
 
-    # print bin_p
-    # print pieces
+    print bin_p
+    print pieces
 
 
 def genetic_stock_cutting(stock, piece, price, iteration, population_size=50, mutation_rate=0.01):
