@@ -4,10 +4,12 @@ import numpy
 
 price = {10: 100, 13: 130, 15: 150}
 stock = (10, 13, 15)
-piece = [3,  3,  3,  3,  3,  4,  4,  5,  6,  6,  7,  7,  7,  7,  8,  8,  9,  10, 10, 10]
-        # [13, 13, 10, 13, 15, 15, 13, 15, 13, 15, 15, 15, 13, 10, 15, 10, 13, 10, 13, 10]
+piece = [3, 3, 3, 3, 3, 4, 4, 5, 6, 6, 7, 7, 7, 7, 8, 8, 9, 10, 10, 10]
+
+
+# [13, 13, 10, 13, 15, 15, 13, 15, 13, 15, 15, 15, 13, 10, 15, 10, 13, 10, 13, 10]
 #
- # 10: 3,5,8,9,10 400
+# 10: 3,5,8,9,10 400
 # 13: 3,4,4,6,7,10,10 520
 # 15: 3,3,3,6,7,7,7,8 450
 
@@ -15,19 +17,23 @@ piece = [3,  3,  3,  3,  3,  4,  4,  5,  6,  6,  7,  7,  7,  7,  8,  8,  9,  10,
 # 13.3: 9,3,  6,4,
 # 15.3: 7,3,5, 8,7 ,8,7
 
-# PRICE = {4300: 86, 4250: 85, 4150: 83, 3950: 79, 3800: 68, 3700: 66, 3550: 64, 3500: 63}
-# STOCK = (4300, 4250, 4150, 3950, 3800, 3700, 3550, 3500)
-# # PIECE = [2350, 2350, 2250, 2250, 2250, 2250, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2100, 2100, 2100, 2100, 2100, 2100, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050,
-# # 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 1950,1950, 1950, 1950, 1950,  1900,1900, 1850,1850,1850,1850,1850,1850,1850,1850,1850, 1700, 1700,1700,1650,1650,1650,1650,1650,1650, 1350, 1350,1350,1350,1350,1350,1350,1350,1350,1350,1300, 1250, 1200, 1150, 1100, 1050]
-# PIECE = [2350, 2350, 2250, 2250, 2250, 2250, 2200, 2200, 2200, 2200, 2100, 2100, 2100, 2100, 2100, 2100, 2100, 2100,
-#          2100, 2100, 2100, 2100, 2100, 2100, 2100, 2050, 2050, 2050, 2050, 2050, 2050, 2000, 2000, 2000, 2000, 2000,
-#          2000, 2000, 2000, 2000, 2000, 2000, 1950, 1950, 1950, 1950, 1950, 1950, 1900, 1900, 1900, 1900, 1900, 1900,
-#          1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1850, 1850, 1850, 1850, 1850, 1850, 1850, 1850, 1850,
-#          1850, 1850, 1850, 1850, 1700, 1700, 1700, 1700, 1700, 1650, 1650, 1350, 1350, 1350, 1350, 1350, 1350, 1350,
-#          1350, 1350, 1300, 1300, 1300, 1250, 1250, 1250, 1250, 1250, 1250, 1200, 1200, 1200, 1200, 1200, 1200, 1200,
-#          1200, 1200, 1200, 1150, 1150, 1150, 1150, 1100, 1100, 1100, 1100, 1100, 1100, 1100, 1100, 1050, 1050, 1050]
+PRICE = {4300: 86, 4250: 85, 4150: 83, 3950: 79, 3800: 68, 3700: 66, 3550: 64, 3500: 63}
+STOCK = (4300, 4250, 4150, 3950, 3800, 3700, 3550, 3500)
+# PIECE = [2350, 2350, 2250, 2250, 2250, 2250, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2100, 2100, 2100, 2100, 2100, 2100, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050,
+# 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 1950,1950, 1950, 1950, 1950,  1900,1900, 1850,1850,1850,1850,1850,1850,1850,1850,1850, 1700, 1700,1700,1650,1650,1650,1650,1650,1650, 1350, 1350,1350,1350,1350,1350,1350,1350,1350,1350,1300, 1250, 1200, 1150, 1100, 1050]
+PIECE = [2350, 2350, 2250, 2250, 2250, 2250, 2200, 2200, 2200, 2200, 2100, 2100, 2100, 2100, 2100, 2100, 2100, 2100,
+         2100, 2100, 2100, 2100, 2100, 2100, 2100, 2050, 2050, 2050, 2050, 2050, 2050, 2000, 2000, 2000, 2000, 2000,
+         2000, 2000, 2000, 2000, 2000, 2000, 1950, 1950, 1950, 1950, 1950, 1950, 1900, 1900, 1900, 1900, 1900, 1900,
+         1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1850, 1850, 1850, 1850, 1850, 1850, 1850, 1850, 1850,
+         1850, 1850, 1850, 1850, 1700, 1700, 1700, 1700, 1700, 1650, 1650, 1350, 1350, 1350, 1350, 1350, 1350, 1350,
+         1350, 1350, 1300, 1300, 1300, 1250, 1250, 1250, 1250, 1250, 1250, 1200, 1200, 1200, 1200, 1200, 1200, 1200,
+         1200, 1200, 1200, 1150, 1150, 1150, 1150, 1100, 1100, 1100, 1100, 1100, 1100, 1100, 1100, 1050, 1050, 1050]
 
+PRICE = {120:12, 115:11.5, 110:11, 105:10.5, 100:10}
+STOCK = (120, 115, 110, 105, 100)
 
+l = [21, 22, 24, 25, 27, 29, 30, 31, 32, 33, 34, 35, 38, 39, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 59, 60, 61, 63, 65, 66, 67]
+q = [13, 15, 7, 5, 9, 9, 3, 15, 18, 17, 4, 17, 20, 9, 4, 19, 4, 12, 15, 3, 20, 14, 15, 6, 4, 7, 5, 19, 19, 6, 3, 7, 20, 5, 10, 17]
 def random_solution_old(stock, piece):
     solution = []
     copy_piece = []
@@ -175,6 +181,7 @@ def twoOpt(iterable):
             neighborHood.append(swap(iterable, i, k))
     return neighborHood
 
+
 # print random_solution_2(STOCK,PIECE)
 
 [[8], [7, 5, 3, 6, 3, 7], [6, 7, 3, 4, 8, 3, 9, 3, 10, 4, 10, 10, 7]]
@@ -210,7 +217,37 @@ def evaluate2(stock, piece, price, solution):
             cost += (dict[key] / key + 1) * price[key]
     return cost
 
+
+def FFD(stock_size, items, price):
+    bins = [[]]
+    items.sort(reverse=True)
+    for item in items:
+        fit = True
+        for bin in bins:
+            try:
+                l = sum(bin) + item
+            except TypeError:
+                print bins
+            if l <= stock_size:
+                bin.append(item)
+                fit = False
+        if fit:
+            bins.append([item])
+    return len(bins) * price[stock_size]
+
+
 def evaluate(stock, piece, price, solution):
+    cost = 0
+    for s in stock:
+        items = []
+        for i in xrange(0, len(solution)):
+            if solution[i] == s:
+                items.append(piece[i])
+        cost += FFD(s, items, price)
+    return cost
+
+
+def evaluate_2(stock, piece, price, solution):
     dict = {}
     cost = 0
     for s in stock:
@@ -219,7 +256,7 @@ def evaluate(stock, piece, price, solution):
             if solution[i] == s:
                 dict[s].append(piece[i])
     print dict
-    for key,value in dict.iteritems():
+    for key, value in dict.iteritems():
         # print key
         if not value:
             continue
@@ -228,22 +265,19 @@ def evaluate(stock, piece, price, solution):
         small = value[0]
         length = len(value)
         # print '--' + str(key)
-        for i in xrange(0,length):
+        for i in xrange(0, length):
             sum_so_far += value[i]
-            if i == length-1:
+            if i == length - 1:
                 num_of_stock += 1
-            elif sum_so_far + value[i+1] >key:
+            elif sum_so_far + value[i + 1] > key:
                 # print sum_so_far
                 sum_so_far = 0
                 num_of_stock += 1
         print 'num STOCK: ' + str(num_of_stock)
-        cost += num_of_stock*price[key]
+        cost += num_of_stock * price[key]
 
-        # if dict[key] % key == 0:
-        #     cost += (dict[key] / key) * PRICE[key]
-        # else:
-        #     cost += (dict[key] / key + 1) * PRICE[key]
     return cost
+
 
 def tournament_selection(stock, piece, price, population):
     tournament_population_size = random.randint(10, 20)
@@ -349,25 +383,36 @@ def genetic_stock_cutting(stock, piece, price, iteration, population_size=50, mu
     best = []
     lowest = 10000
     for i in population:
-        for j in twoOpt(i):
-            cost = evaluate(stock, piece, price, j)
+        # for j in twoOpt(i):
+            cost = evaluate(stock, piece, price, i)
             if cost < lowest:
-                best = j
+                best = i
                 lowest = cost
     print best
     # print evaluate(STOCK, PIECE, PRICE, best)
     return lowest
 
+PIECE = []
+for i in xrange(0,len(l)):
+    for j in xrange(0,len(q)):
+        a = [l[i]]*q[j]
+        PIECE += a
+
 
 start_time = time.time()
 # print single_point_crossover([[13,13,15,15,15,15,15,13,13,15,13,13,15,15,10,15,15,15,15,15],[10,10,13,15,15,10,10,10,10,13,13,15,15,15,13,15,10,13,15,15]])
 #
-# print evaluate([15, 13, 15, 15, 15, 15, 15, 13, 10, 13, 13, 13, 15, 15, 10, 15, 15, 15, 15, 15],PRICE,PIECE,STOCK)
+# print evaluate([15, 13, 15, 15, 15, 15, 15, 13, 10, 13, 13, 13, 15, 15, 10, 15, 15, 15, 15, 15],price,piece,stock)
+# print evaluate_2(stock,piece,price,  [10, 10, 13, 13, 15, 10, 15, 10, 10, 10, 15, 10, 15, 13, 10, 15, 13, 10, 13, 10], )
+
 #
 # print mutation([15, 13, 15, 15, 15, 15, 15, 13, 10, 13, 13, 13, 15, 15, 10, 15, 15, 15, 15, 15],STOCK)
 
-# print genetic_stock_cutting(STOCK, PIECE, PRICE, iteration=500, population_size=100, mutation_rate=0.01)
-print (evaluate(stock,piece,price,[10, 10, 13, 13, 15, 10, 15, 10, 10, 10, 15, 10, 15, 13, 10, 15, 13, 10, 13, 10]))
+# print FFD(10,[3, 3, 4, 5, 6, 6, 7, 8, 10, 10],price)
+print genetic_stock_cutting(STOCK, PIECE, PRICE, iteration=100, population_size=10, mutation_rate=0.1)
+
+# print genetic_stock_cutting(stock, piece, price, iteration=500, population_size=100, mutation_rate=0.2)
+# print (evaluate(stock, piece, price, [10, 10, 13, 13, 15, 10, 15, 10, 10, 10, 15, 10, 15, 13, 10, 15, 13, 10, 13, 10]))
 
 print("--- %s seconds ---" % (time.time() - start_time))
 # print roullet_pick(STOCK,PIECE,PRICE,[[10, 13, 13, 10, 15, 15, 13, 13, 15, 10, 15, 15, 15, 13, 15, 15, 15, 10, 15, 15], [10, 13, 13, 10, 15, 15, 13, 13, 15, 10, 15, 13, 15, 13, 15, 15, 15, 10, 15, 15], [10, 13, 13, 10, 15, 15, 13, 13, 15, 10, 15, 13, 15, 13, 15, 15, 15, 10, 15, 15], [10, 13, 13, 10, 15, 15, 13, 13, 15, 10, 15, 13, 15, 13, 15, 15, 15, 10, 15, 15]])
