@@ -68,7 +68,7 @@ class GA:
 
             for p in sorted(set(pie)):
                 quantities.append(pie.count(p))
-            print "Quantities: %s"%quantities
+            print "Quantities:     %s"%quantities
 
             print bin_p
             print pieces
