@@ -17,17 +17,17 @@ piece = [3, 3, 3, 3, 3, 4, 4, 5, 6, 6, 7, 7, 7, 7, 8, 8, 9, 10, 10, 10]
 # 13.3: 9,3,  6,4,
 # 15.3: 7,3,5, 8,7 ,8,7
 
-PRICE = {4300: 86, 4250: 85, 4150: 83, 3950: 79, 3800: 68, 3700: 66, 3550: 64, 3500: 63}
-STOCK = (4300, 4250, 4150, 3950, 3800, 3700, 3550, 3500)
-# PIECE = [2350, 2350, 2250, 2250, 2250, 2250, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2100, 2100, 2100, 2100, 2100, 2100, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050,
-# 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 1950,1950, 1950, 1950, 1950,  1900,1900, 1850,1850,1850,1850,1850,1850,1850,1850,1850, 1700, 1700,1700,1650,1650,1650,1650,1650,1650, 1350, 1350,1350,1350,1350,1350,1350,1350,1350,1350,1300, 1250, 1200, 1150, 1100, 1050]
-PIECE = [2350, 2350, 2250, 2250, 2250, 2250, 2200, 2200, 2200, 2200, 2100, 2100, 2100, 2100, 2100, 2100, 2100, 2100,
-         2100, 2100, 2100, 2100, 2100, 2100, 2100, 2050, 2050, 2050, 2050, 2050, 2050, 2000, 2000, 2000, 2000, 2000,
-         2000, 2000, 2000, 2000, 2000, 2000, 1950, 1950, 1950, 1950, 1950, 1950, 1900, 1900, 1900, 1900, 1900, 1900,
-         1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1850, 1850, 1850, 1850, 1850, 1850, 1850, 1850, 1850,
-         1850, 1850, 1850, 1850, 1700, 1700, 1700, 1700, 1700, 1650, 1650, 1350, 1350, 1350, 1350, 1350, 1350, 1350,
-         1350, 1350, 1300, 1300, 1300, 1250, 1250, 1250, 1250, 1250, 1250, 1200, 1200, 1200, 1200, 1200, 1200, 1200,
-         1200, 1200, 1200, 1150, 1150, 1150, 1150, 1100, 1100, 1100, 1100, 1100, 1100, 1100, 1100, 1050, 1050, 1050]
+# PRICE = {4300: 86, 4250: 85, 4150: 83, 3950: 79, 3800: 68, 3700: 66, 3550: 64, 3500: 63}
+# STOCK = (4300, 4250, 4150, 3950, 3800, 3700, 3550, 3500)
+# # PIECE = [2350, 2350, 2250, 2250, 2250, 2250, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2100, 2100, 2100, 2100, 2100, 2100, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050,
+# # 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 1950,1950, 1950, 1950, 1950,  1900,1900, 1850,1850,1850,1850,1850,1850,1850,1850,1850, 1700, 1700,1700,1650,1650,1650,1650,1650,1650, 1350, 1350,1350,1350,1350,1350,1350,1350,1350,1350,1300, 1250, 1200, 1150, 1100, 1050]
+# PIECE = [2350, 2350, 2250, 2250, 2250, 2250, 2200, 2200, 2200, 2200, 2100, 2100, 2100, 2100, 2100, 2100, 2100, 2100,
+#          2100, 2100, 2100, 2100, 2100, 2100, 2100, 2050, 2050, 2050, 2050, 2050, 2050, 2000, 2000, 2000, 2000, 2000,
+#          2000, 2000, 2000, 2000, 2000, 2000, 1950, 1950, 1950, 1950, 1950, 1950, 1900, 1900, 1900, 1900, 1900, 1900,
+#          1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1850, 1850, 1850, 1850, 1850, 1850, 1850, 1850, 1850,
+#          1850, 1850, 1850, 1850, 1700, 1700, 1700, 1700, 1700, 1650, 1650, 1350, 1350, 1350, 1350, 1350, 1350, 1350,
+#          1350, 1350, 1300, 1300, 1300, 1250, 1250, 1250, 1250, 1250, 1250, 1200, 1200, 1200, 1200, 1200, 1200, 1200,
+#          1200, 1200, 1200, 1150, 1150, 1150, 1150, 1100, 1100, 1100, 1100, 1100, 1100, 1100, 1100, 1050, 1050, 1050]
 
 PRICE = {120:12, 115:11.5, 110:11, 105:10.5, 100:10}
 STOCK = (120, 115, 110, 105, 100)
@@ -64,39 +64,12 @@ def solution_cost_old(solution, price):
     return cost
 
 
-# print(solution_cost(random_solution(STOCK,PIECE),PRICE))
-
-# print(range(0,10))
-# print(random_population(10,STOCK,PIECE))
-
-# def random_solution(STOCK, PIECE):
-#     geno1 = [None] * len(STOCK)
-#     copy_piece = []
-#     copy_piece[:] = PIECE[:]
-#     while len(copy_piece) > 0:
-#         random_index = random.randint(0,len(STOCK)-1)
-#         random_stock = STOCK[random_index]
-#         solution_pieces = []
-#         while len(copy_piece) > 0 and random_stock - sum(solution_pieces) >= min(copy_piece):
-#             random_piece = random.choice(copy_piece)
-#             if random_stock - sum(solution_pieces) >= random_piece:
-#                 solution_pieces.append(random_piece)
-#                 copy_piece.remove(random_piece)
-#         if geno1[random_index] is not None:
-#             geno1[random_index] = geno1[random_index] + solution_pieces
-#         else:
-#             geno1[random_index] = solution_pieces
-#         # geno1.append({"length": random_stock, "solution_pieces": solution_pieces})
-#     return geno1
-
-
 def random_solution(stock, piece):
     solution = [None] * len(piece)
     for i in xrange(0, len(piece)):
         solution[i] = random.choice(stock)
 
     return solution
-
 
 def random_population(population_size, stock, piece):
     population = []
@@ -182,24 +155,7 @@ def twoOpt(iterable):
     return neighborHood
 
 
-# print random_solution_2(STOCK,PIECE)
 
-[[8], [7, 5, 3, 6, 3, 7], [6, 7, 3, 4, 8, 3, 9, 3, 10, 4, 10, 10, 7]]
-[[9, 3, 5, 3, 6, 4, 4], [3, 10, 8, 7, 6, 8], [3, 7, 3, 10, 7, 7, 10]]
-
-[3, 3, 3, 3, 3, 4, 4, 5, 6, 6, 7, 7, 7, 7, 8, 8, 9, 10, 10, 10]
-[15, 13, 15, 15, 15, 15, 15, 13, 10, 13, 13, 13, 15, 15, 10, 15, 15, 15, 15, 15]
-
-[13, 13, 15, 15, 15, 15, 15, 13, 13, 15, 13, 13, 15, 15, 10, 15, 15, 15, 15, 15]
-
-[10, 10, 13, 15, 15, 10, 10, 10, 10, 13, 13, 15, 15, 15, 13, 15, 10, 13, 15, 15]
-
-
-# for i in pmx_cross_over([[13,13,15,15,15,15,15,13,13,15,13,13,15,15,10,15,15,15,15,15],[10,10,13,15,15,10,10,10,10,13,13,15,15,15,13,15,10,13,15,15]]):
-#     print i
-# 10: 6+8=14 2
-# 13: 3+5+6+7+7=28 3
-# 15: 3+3+3+3+4+4+7+7+8+9+10+10+10=81 6
 
 # greedy evaluate
 def evaluate2(stock, piece, price, solution):
@@ -280,7 +236,7 @@ def evaluate_2(stock, piece, price, solution):
 
 
 def tournament_selection(stock, piece, price, population):
-    tournament_population_size = random.randint(10, 20)
+    tournament_population_size = random.randint(5, 10)
     tournament_population = random.sample(population, tournament_population_size)
 
     m1, m2 = float('inf'), float('inf')
@@ -360,21 +316,13 @@ def genetic_stock_cutting(stock, piece, price, iteration, population_size=50, mu
         newGen = []
 
         while len(newGen) < population_size:
-            # while lowest > 3999:
 
-            # for i in xrange(0,population_size):
             prob = random.uniform(0, 1)
             if prob < mutation_rate:
                 index = random.randint(0, len(population) - 1)
                 newGen.append(scramble_mutation(population[index], stock))
             else:
-                # print population
                 parents = tournament_selection(stock, piece, price, population)
-                # print parents
-                # population.remove(parents[0])
-                # if parents[1] in population:
-                #     population.remove(parents[1])
-                # print parents
                 children = uniform_crossover(parents)
                 newGen.append(children[0])
                 if children[0] != children[1]:
@@ -383,7 +331,6 @@ def genetic_stock_cutting(stock, piece, price, iteration, population_size=50, mu
     best = []
     lowest = 10000
     for i in population:
-        # for j in twoOpt(i):
             cost = evaluate(stock, piece, price, i)
             if cost < lowest:
                 best = i
@@ -394,8 +341,8 @@ def genetic_stock_cutting(stock, piece, price, iteration, population_size=50, mu
 
 PIECE = []
 for i in xrange(0,len(l)):
-    for j in xrange(0,len(q)):
-        a = [l[i]]*q[j]
+
+        a = [l[i]]*q[i]
         PIECE += a
 
 
@@ -409,7 +356,7 @@ start_time = time.time()
 # print mutation([15, 13, 15, 15, 15, 15, 15, 13, 10, 13, 13, 13, 15, 15, 10, 15, 15, 15, 15, 15],STOCK)
 
 # print FFD(10,[3, 3, 4, 5, 6, 6, 7, 8, 10, 10],price)
-print genetic_stock_cutting(STOCK, PIECE, PRICE, iteration=100, population_size=10, mutation_rate=0.1)
+print genetic_stock_cutting(stock=STOCK, piece=PIECE, price=PRICE, iteration=500, population_size=30, mutation_rate=0.1)
 
 # print genetic_stock_cutting(stock, piece, price, iteration=500, population_size=100, mutation_rate=0.2)
 # print (evaluate(stock, piece, price, [10, 10, 13, 13, 15, 10, 15, 10, 10, 10, 15, 10, 15, 13, 10, 15, 13, 10, 13, 10]))
