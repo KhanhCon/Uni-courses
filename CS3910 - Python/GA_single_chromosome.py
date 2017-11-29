@@ -1,11 +1,11 @@
-import random, time, sys
+import random, time,heapq, sys
 
 
 class GA:
     class Genotype:
         def __init__(self, stock, piece, price, chromosome):
             self.chromosome = chromosome
-            self.fitness = self.calculate_fitness(stock, piece, price)
+            self.fitness = self.calculate_fitness_FFD(stock, piece, price)
 
         def FFD(self, stock_size, items):
             bins = [[]]
@@ -21,7 +21,7 @@ class GA:
                     bins.append([item])
             return bins
 
-        def calculate_fitness(self, stock, piece, price):
+        def calculate_fitness_FFD(self, stock, piece, price):
             cost = 0
             items = {}
             for s in stock:
@@ -32,9 +32,7 @@ class GA:
                 cost += len(self.FFD(key, value)) * price[key]
             return cost
 
-
-
-        def print_solution(self, stock, piece, price):
+        def print_solution(self, stock, piece):
             items = {}
 
             pie = []
@@ -50,34 +48,33 @@ class GA:
                 pieces += len(value)
                 bins = self.FFD(key, value)
                 for bin in bins:
-                    if sum(bin) >key:
-                        print "Exceed: %s:  %s"%(key,bin)
+                    if sum(bin) > key:
+                        print("Exceed: %s:  %s" % (key, bin))
                 for i in bins:
                     bin_p += len(i)
                 for bin in bins:
                     for item in bin:
                         pie.append(item)
                 # print "%i: %s" % (key, value)
-                print "%i: %s" % (key, bins)
-            print "chromosome: %s"%self.chromosome
-            print "cost: %s"%self.fitness
+                print("%i: %s" % (key, bins))
+            print("chromosome: %s" % self.chromosome)
+            print("cost: %s" % self.fitness)
 
-            print "--------"
+            print("--------")
 
-            print "Piece lengths: %s"%(sorted(list(set(pie))))
+            print("Piece lengths: %s" % (sorted(list(set(pie)))))
 
             for p in sorted(set(pie)):
                 quantities.append(pie.count(p))
-            print "Quantities:     %s"%quantities
+            print("Quantities:    %s" % quantities)
 
-            print bin_p
-            print pieces
-
+            print (bin_p)
+            print (pieces)
 
     def __init__(self, stock, piece, price):
         self.solution = None
         self.stock = stock
-        self.piece = piece
+        self.piece = sorted(piece, reverse=True)
         self.price = price
 
     def random_geno(self):
@@ -111,6 +108,11 @@ class GA:
                 min2 = x
                 m2 = x_fitness
 
+        # min1, min2 = heapq.nsmallest(2, tournament_population,  key=lambda x: x.fitness) #slowest
+
+        # min1, min2 = sorted(tournament_population, key=lambda x: x.fitness)[0:2] #3rd slowest
+        # tournament_population.sort(key=lambda x: x.fitness) #second slowest
+        # min1, min2 = tournament_population[0:2]             #second slowest
         return [min1, min2]
 
     def uniform_crossover(self, parent_chromosome):
@@ -147,7 +149,7 @@ class GA:
         mutation_rate = mutation_rate
         population = self.random_population(population_size)
 
-        for i in range(0, iteration):
+        for geno in range(0, iteration):
             newGen = []
             while len(newGen) < population_size:
 
@@ -164,41 +166,46 @@ class GA:
             population[:] = newGen[:]
         best = None
         lowest = 10000
-        for i in population:
-            cost = i.fitness
+        for geno in population:
+            cost = geno.fitness
             if cost < lowest:
-                best = i
+                best = geno
                 lowest = cost
         # print_solution(stock, piece, price, best)
-        best.print_solution(self.stock,self.piece,self.price)
+        best.print_solution(self.stock, self.piece)
         # print lowest
         self.solution = best
         return best
 
 
 if __name__ == '__main__':
-    price = {10: 100, 13: 130, 15: 150}
-    stock = (10, 13, 15)
-    piece = [3, 3, 3, 3, 3, 4, 4, 5, 6, 6, 7, 7, 7, 7, 8, 8, 9, 10, 10, 10]
+    price1 = {10: 100, 13: 130, 15: 150}
+    stock1 = (10, 13, 15)
+    piece1 = [3, 3, 3, 3, 3, 4, 4, 5, 6, 6, 7, 7, 7, 7, 8, 8, 9, 10, 10, 10]
 
     price2 = {4300: 86, 4250: 85, 4150: 83, 3950: 79, 3800: 68, 3700: 66, 3550: 64, 3500: 63}
     stock2 = (4300, 4250, 4150, 3950, 3800, 3700, 3550, 3500)
-    # PIECE = [2350, 2350, 2250, 2250, 2250, 2250, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2200, 2100, 2100, 2100, 2100, 2100, 2100, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050, 2050,
-    # 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 1950,1950, 1950, 1950, 1950,  1900,1900, 1850,1850,1850,1850,1850,1850,1850,1850,1850, 1700, 1700,1700,1650,1650,1650,1650,1650,1650, 1350, 1350,1350,1350,1350,1350,1350,1350,1350,1350,1300, 1250, 1200, 1150, 1100, 1050]
-    piece2 = [2350, 2350, 2250, 2250, 2250, 2250, 2200, 2200, 2200, 2200, 2100, 2100, 2100, 2100, 2100, 2100, 2100, 2100,
-             2100, 2100, 2100, 2100, 2100, 2100, 2100, 2050, 2050, 2050, 2050, 2050, 2050, 2000, 2000, 2000, 2000, 2000,
-             2000, 2000, 2000, 2000, 2000, 2000, 1950, 1950, 1950, 1950, 1950, 1950, 1900, 1900, 1900, 1900, 1900, 1900,
-             1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1850, 1850, 1850, 1850, 1850, 1850, 1850, 1850, 1850,
-             1850, 1850, 1850, 1850, 1700, 1700, 1700, 1700, 1700, 1650, 1650, 1350, 1350, 1350, 1350, 1350, 1350, 1350,
-             1350, 1350, 1300, 1300, 1300, 1250, 1250, 1250, 1250, 1250, 1250, 1200, 1200, 1200, 1200, 1200, 1200, 1200,
-             1200, 1200, 1200, 1150, 1150, 1150, 1150, 1100, 1100, 1100, 1100, 1100, 1100, 1100, 1100, 1050, 1050, 1050]
+    piece2 = [2350, 2350, 2250, 2250, 2250, 2250, 2200, 2200, 2200, 2200, 2100, 2100, 2100, 2100, 2100, 2100, 2100,
+              2100,
+              2100, 2100, 2100, 2100, 2100, 2100, 2100, 2050, 2050, 2050, 2050, 2050, 2050, 2000, 2000, 2000, 2000,
+              2000,
+              2000, 2000, 2000, 2000, 2000, 2000, 1950, 1950, 1950, 1950, 1950, 1950, 1900, 1900, 1900, 1900, 1900,
+              1900,
+              1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1900, 1850, 1850, 1850, 1850, 1850, 1850, 1850, 1850,
+              1850,
+              1850, 1850, 1850, 1850, 1700, 1700, 1700, 1700, 1700, 1650, 1650, 1350, 1350, 1350, 1350, 1350, 1350,
+              1350,
+              1350, 1350, 1300, 1300, 1300, 1250, 1250, 1250, 1250, 1250, 1250, 1200, 1200, 1200, 1200, 1200, 1200,
+              1200,
+              1200, 1200, 1200, 1150, 1150, 1150, 1150, 1100, 1100, 1100, 1100, 1100, 1100, 1100, 1100, 1050, 1050,
+              1050]
 
-    piece2.sort(reverse=True)
-    piece.sort(reverse=True)
+    # piece2.sort(reverse=True)
+    # piece1.sort(reverse=True)
 
     start_time = time.time()
 
     GA = GA(stock2, piece2, price2)
-    GA.run(iteration=5000, population_size=200, mutation_rate=0.1)
+    geno = GA.run(iteration=500, population_size=100, mutation_rate=0.1)
 
     print("--- %s seconds ---" % (time.time() - start_time))

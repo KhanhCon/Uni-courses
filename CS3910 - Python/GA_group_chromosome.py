@@ -383,7 +383,7 @@ if __name__ == '__main__':
             if total2 != 20:
                 print "@@"
 
-    geno, fitness = GA(STOCK, PIECE, PRICE, PIECE_map, iteration=100, population_size=20, mutation_rate=0.2)
+    geno, fitness = GA(STOCK, PIECE, PRICE, PIECE_map, iteration=500, population_size=20, mutation_rate=0.2)
     print geno.item_chromosome
     geno.print_phenotype(PIECE)
     print geno.stock_chromosome
