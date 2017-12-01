@@ -5,7 +5,9 @@ ebins = [[3, 3, 3], [6, 2, 1, ], [5, 2], [4, 3], [7, 2], [5, 4]]
 
 testbin = [[3, 3, 3], [2, 6, 1, ], [7, 2], [5, 4]]
 
+5/10  10
 
+10/20 30
 # saved here because it has better performance
 def free(bins):
     m1, m2 = float('inf'), float('inf')

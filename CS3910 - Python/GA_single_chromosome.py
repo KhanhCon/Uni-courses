@@ -263,7 +263,7 @@ class GA:
 
 
     def run(self, iteration, population_size=50, mutation_rate=0.1):
-        print "running EA_stock_cutting..."
+        print("running EA_stock_cutting...")
         mutation_rate = mutation_rate
         population = self.random_population(population_size)
         # population.sort(key=lambda x:x.fitness)
@@ -297,8 +297,8 @@ class GA:
                 population.sort(key=lambda x:x.fitness)
                 del population[-population_size:]
 
-            # sys.stdout.write('\r')
-            # sys.stdout.write("iteration: %s || seconds: %s || mutation rate: %s" % (str(iter), time.time() - start_time,str(mutation_rate)))
+            sys.stdout.write('\r')
+            sys.stdout.write("iteration: %s || seconds: %s || mutation rate: %s" % (str(iter), time.time() - start_time,str(mutation_rate)))
             if iter % 10 == 0:
                 if (population[0].fitness < best_fitness):
                     best_geno = population[0]
@@ -340,24 +340,30 @@ class GA:
         return best
     def random_search(self,iteration,max_time):
         print 'Running random search...'
+        repeated = set()
         best_fitness = 10000
         best_geno = None
         start = time.time()
-        while best_fitness > 4400:
+        while best_fitness > 1800:
         # while time.time() - start < float(max_time):
         # for i in xrange(0,iteration):
-        
             random_geno = self.random_geno()
+            chromosome_string = int(''.join(str(elem) for elem in random_geno.chromosome))
+            if chromosome_string in repeated:
+                print "REPEATED"
+                continue
             if random_geno.fitness < best_fitness:
                 best_fitness = random_geno.fitness
                 best_geno = random_geno
-        # best_geno.print_solution(self.stock, self.piece)
+            repeated.add(chromosome_string)
             sys.stdout.write('\r')
             sys.stdout.write("seconds: %s " % (time.time() - start))
+
             if time.time() - start > float(100):
                 break
         sys.stdout.write('\r')
         print "random seartch cost: %s"%best_geno.fitness
+
 
 
 if __name__ == '__main__':
@@ -401,11 +407,11 @@ if __name__ == '__main__':
               65, 65, 65, 65, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 67, 67, 67, 67, 67, 67, 67, 67, 67, 67, 67, 67,
               67, 67, 67, 67, 67]
 
-    GA = GA(stock2, piece2, price2)
+    GA = GA(stock3, piece3, price3)
 
     start_time = time.time()
-    geno = GA.run(iteration=10, population_size=50, mutation_rate=0.1)
+    geno = GA.run(iteration=500, population_size=100, mutation_rate=0.05)
     print("---GA runtime: %s seconds --- \n" % (time.time() - start_time))
     start_time = time.time()
-    GA.random_search(1,10)
+    GA.random_search(1,100)
     print("---Random Search runtime: %s seconds ---" % (time.time() - start_time))
