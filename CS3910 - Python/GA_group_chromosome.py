@@ -1,4 +1,4 @@
-import random, sys, bisect
+import random, sys, bisect, time
 import sys, heapq
 from itertools import chain
 
@@ -18,6 +18,15 @@ STOCK1 = (10, 13, 15)
 PIECE1 = [3, 3, 3, 3, 3, 4, 4, 5, 6, 6, 7, 7, 7, 7, 8, 8, 9, 10, 10, 10]
 PIECE_map1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
 
+data1 = {
+    "price": PRICE1,
+    "stock": STOCK1,
+    "piece": PIECE1,
+    "piece_map" : PIECE_map1
+}
+
+
+
 PRICE2 = {4300: 86, 4250: 85, 4150: 83, 3950: 79, 3800: 68, 3700: 66, 3550: 64, 3500: 63}
 STOCK2 = (3500, 3550, 3700, 3800, 3950, 4150, 4250, 4300)
 
@@ -33,6 +42,13 @@ PIECE_map2 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 
               55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
               81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105,
               106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125]
+
+data2 = {
+    "price": PRICE2,
+    "stock": STOCK2,
+    "piece": PIECE2,
+    "piece_map" : PIECE_map2
+}
 
 STOCK3 = (100, 105, 110, 115, 120)
 PRICE3 = {120: 12, 115: 11.5, 110: 11, 105: 10.5, 100: 10}
@@ -70,6 +86,13 @@ PIECE_map3 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 
               337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 353, 354, 355, 356, 357,
               358, 359, 360, 361, 362, 363, 364, 365, 366, 367, 368, 369, 370, 371, 372, 373, 374, 375, 376, 377, 378,
               379, 380, 381, 382, 383, 384, 385, 386, 387, 388, 389, 390, 391, 392, 393, 394]
+
+data3 = {
+    "price": PRICE3,
+    "stock": STOCK3,
+    "piece": PIECE3,
+    "piece_map" : PIECE_map3
+}
 
 
 class Genotype:
@@ -361,7 +384,7 @@ class GA:
         copy_piece_map[:] = piece_mapping[:]
         # copy_piece_map.sort()
         while len(copy_piece_map) > 0:
-            _yield = float('inf')
+            _yield = float('-inf')
             best_solution = None
             best_stock = None
             for stock_size in self.stock:
@@ -370,10 +393,13 @@ class GA:
                     item = self.piece[piece_index]
                     if stock_size - piece_sum(solution_pieces) >= item:
                         solution_pieces.append(piece_index)
+                # current_yield = float((stock_size - piece_sum(solution_pieces))/float(stock_size))*float(self.price[stock_size])
+                current_yield = (float(piece_sum(solution_pieces)))/float(self.price[stock_size])
+                # current_yield = float(stock_size - piece_sum(solution_pieces))*float(self.price[stock_size])
 
-                if float((stock_size - piece_sum(solution_pieces)))*float(self.price[stock_size]) < _yield:
+                if current_yield > _yield:
                     # print PRICE2[stock_size]
-                    _yield = float((stock_size - piece_sum(solution_pieces))) * float(self.price[stock_size])
+                    _yield = current_yield
                     # _yield = piece_sum(solution_pieces) / stock_size
                     best_solution = solution_pieces
                     best_stock = stock_size
@@ -484,8 +510,11 @@ class GA:
         # while lowest > 3999:
         best_fitness = 100000
         best_geno = None
-        for iter in range(0, iteration):
-            # print population
+        iter = 0
+        start_time = time.time()
+        # for iter in range(0, iteration):
+        while best_fitness>3984:
+            # print populatio5
             newGen = []
 
             while len(newGen) < population_size:
@@ -513,14 +542,16 @@ class GA:
                     newGen.append(child1)
                     if child1 != child2:
                         newGen.append(child1)
+            sys.stdout.write('\r')
+            sys.stdout.write("iteration: %s || seconds: %s || mutation rate: %s" % (str(iter), time.time() - start_time, str(mutation_rate)))
             if iter % 10 == 0:
                 currbest = min(population,key=lambda x:x.fitness)
                 curr_cost = currbest.fitness
                 if (curr_cost < best_fitness):
                     best_geno = currbest
                     best_fitness = curr_cost
-
             population[:] = newGen[:]
+            iter += 1
         # best = []
         # lowest = 10000
         # for Geno in population:
@@ -538,8 +569,8 @@ class GA:
             best_fitness = curr_cost
         # print
         # print evaluate(STOCK, PIECE, PRICE, best)
-        best_geno.print_solution(PIECE2, STOCK2)
-        print best_fitness
+        # best_geno.print_solution(PIECE2, STOCK2)
+        # print best_fitness
         return best_geno, best_fitness
         # return best, lowest
 
@@ -600,12 +631,9 @@ if __name__ == '__main__':
                 print "@@"
     # start
     ga = GA(STOCK2, PIECE2, PRICE2, PIECE_map2)
-    geno, fitness = ga.run(iteration=200, population_size=100, mutation_rate=0.2)
-    # print geno.item_chromosome
-    # geno.update_stock(STOCK3, PIECE3, PRICE3)
-    # geno.print_phenotype(PIECE2)
-    # print geno.stock_chromosome
-    print fitness
+    geno, fitness = ga.run(iteration=150, population_size=200, mutation_rate=0.25)
 
-    # geno.print_solution(PIECE2, STOCK2)
+
+    geno.print_solution(ga.piece, ga.stock)
+    print fitness
     # print FFD(STOCK,PIECE,PIECE_map)
