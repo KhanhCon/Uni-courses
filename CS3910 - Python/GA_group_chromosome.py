@@ -202,11 +202,12 @@ class Genotype:
 
 class GA:
 
-    def __init__(self,stock, piece, price,piece_map):
-        self.stock = stock
-        self.piece = piece
-        self.price = price
-        self.piece_map = piece_map
+    def __init__(self,data):
+        self.stock = data["stock"]
+        self.piece = data["piece"]
+        self.price = data["price"]
+        # self.piece_map = data["piece_map"]
+        self.piece_map = range(0,len(data["piece"]))
 
 
 
@@ -393,21 +394,21 @@ class GA:
                     item = self.piece[piece_index]
                     if stock_size - piece_sum(solution_pieces) >= item:
                         solution_pieces.append(piece_index)
-                # current_yield = float((stock_size - piece_sum(solution_pieces))/float(stock_size))*float(self.price[stock_size])
+                # current_yield = float((stock - piece_sum(solution_pieces))/float(stock))*float(self.price[stock])
                 current_yield = (float(piece_sum(solution_pieces)))/float(self.price[stock_size])
-                # current_yield = float(stock_size - piece_sum(solution_pieces))*float(self.price[stock_size])
+                # current_yield = float(stock - piece_sum(solution_pieces))*float(self.price[stock])
 
                 if current_yield > _yield:
-                    # print PRICE2[stock_size]
+                    # print PRICE2[stock]
                     _yield = current_yield
-                    # _yield = piece_sum(solution_pieces) / stock_size
+                    # _yield = piece_sum(solution_pieces) / stock
                     best_solution = solution_pieces
                     best_stock = stock_size
-                    # elif(float(piece_sum(solution_pieces)) / stock_size == _yield):
+                    # elif(float(piece_sum(solution_pieces)) / stock == _yield):
                     #     if random.randint(1,5)==2:
-                    #         _yield = piece_sum(solution_pieces) / stock_size
+                    #         _yield = piece_sum(solution_pieces) / stock
                     #         best_solution = solution_pieces
-                    #         best_stock = stock_size
+                    #         best_stock = stock
 
             item_chromosome.append(best_solution)
             stock_chromosome.append(best_stock)
@@ -444,11 +445,11 @@ class GA:
                     _yield = piece_sum(solution_pieces) / stock_size
                     best_solution = solution_pieces
                     best_stock = stock_size
-                    # elif(float(piece_sum(solution_pieces)) / stock_size == _yield):
+                    # elif(float(piece_sum(solution_pieces)) / stock == _yield):
                     #     if random.randint(1,5)==2:
-                    #         _yield = piece_sum(solution_pieces) / stock_size
+                    #         _yield = piece_sum(solution_pieces) / stock
                     #         best_solution = solution_pieces
-                    #         best_stock = stock_size
+                    #         best_stock = stock
 
             item_chromosome.append(best_solution)
             stock_chromosome.append(best_stock)
@@ -480,13 +481,6 @@ class GA:
         tournament_population = random.sample(geno_population, tournament_population_size)
 
         # m1, m2 = float('inf'), float('inf')
-        # for geno in tournament_population:
-        #     if geno.fitness <= m1:
-        #         m1, m2 = geno, m1
-        #     elif geno.fitness < m2:
-        #         m2 = geno
-
-        # m1, m2 = float('inf'), float('inf')
         # min1, min2 = None, None
         # for x in tournament_population:
         #     x_fitness = x.fitness
@@ -512,8 +506,8 @@ class GA:
         best_geno = None
         iter = 0
         start_time = time.time()
-        # for iter in range(0, iteration):
-        while best_fitness>3984:
+        for iter in range(0, iteration):
+        # while best_fitness>1764.0:
             # print populatio5
             newGen = []
 
@@ -537,7 +531,7 @@ class GA:
                     # if parents[1] in population:
                     #     population.remove(parents[1])
                     # print parents
-
+                # [57,56,22,13,18]
                     child1, child2 = self.crossover(parent1.item_chromosome, parent2.item_chromosome)
                     newGen.append(child1)
                     if child1 != child2:
@@ -630,10 +624,8 @@ if __name__ == '__main__':
             if total2 != 20:
                 print "@@"
     # start
-    ga = GA(STOCK2, PIECE2, PRICE2, PIECE_map2)
-    geno, fitness = ga.run(iteration=150, population_size=200, mutation_rate=0.25)
-
-
+    ga = GA(data2)
+    geno, fitness = ga.run(iteration=20, population_size=300, mutation_rate=0.3)
     geno.print_solution(ga.piece, ga.stock)
     print fitness
     # print FFD(STOCK,PIECE,PIECE_map)

@@ -190,7 +190,7 @@ def FFD(stock_size, items, price):
         if fit:
             bins.append([item])
 
-    # return len(bins) * price[stock_size]
+    # return len(bins) * price[stock]
     return bins
 
 

@@ -195,7 +195,7 @@ def BFD(stock_size, items):
         if fit:
             bins.append([item])
     bins.sort(key=lambda x: sum(x), reverse=True)
-    # return self.lsearch(bins, 3, stock_size)
+    # return self.lsearch(bins, 3, stock)
     return bins
 
 
@@ -295,20 +295,20 @@ def FFD(stock, piece, piece_mapping):
     #     _yield = 0
     #     best_solution = None
     #     best_stock = None
-    #     for stock_size in stock:
+    #     for stock in stock:
     #         solution_pieces = []
     #         count = 0
-    #         while stock_size - piece_sum(solution_pieces) >= piece[copy_piece_map[position]] and position >= 0:
+    #         while stock - piece_sum(solution_pieces) >= piece[copy_piece_map[position]] and position >= 0:
     #             item = piece[copy_piece_map[position]]
-    #             if stock_size - piece_sum(solution_pieces) >= item:
+    #             if stock - piece_sum(solution_pieces) >= item:
     #                 solution_pieces.append(copy_piece_map[position])
     #                 position -= 1
     #                 count += 1
     #         print solution_pieces
-    #         if piece_sum(solution_pieces) / stock_size > _yield:
-    #             _yield = piece_sum(solution_pieces) / stock_size
+    #         if piece_sum(solution_pieces) / stock > _yield:
+    #             _yield = piece_sum(solution_pieces) / stock
     #             best_solution = solution_pieces
-    #             best_stock = stock_size
+    #             best_stock = stock
     #             print "in: %s" % best_solution
     #         print "best: %s" % best_solution
     #         position += count
