@@ -2,17 +2,6 @@ import random, sys, bisect, time
 import sys, heapq
 from itertools import chain
 
-# class StockSizeChromosome:
-#     def __init__(self):
-#         self.chromosome = []
-#
-#     0
-#
-# class ItemChromosome:
-#     def __init__(self):
-#         self.chromosome = [None]*
-#     0
-
 PRICE1 = {10: 100, 13: 130, 15: 150}
 STOCK1 = (10, 13, 15)
 PIECE1 = [3, 3, 3, 3, 3, 4, 4, 5, 6, 6, 7, 7, 7, 7, 8, 8, 9, 10, 10, 10]
@@ -25,11 +14,8 @@ data1 = {
     "piece_map" : PIECE_map1
 }
 
-
-
 PRICE2 = {4300: 86, 4250: 85, 4150: 83, 3950: 79, 3800: 68, 3700: 66, 3550: 64, 3500: 63}
 STOCK2 = (3500, 3550, 3700, 3800, 3950, 4150, 4250, 4300)
-
 PIECE2 = [1050, 1050, 1050, 1100, 1100, 1100, 1100, 1100, 1100, 1100, 1100, 1150, 1150, 1150, 1150, 1200, 1200, 1200,
           1200, 1200, 1200, 1200, 1200, 1200, 1200, 1250, 1250, 1250, 1250, 1250, 1250, 1300, 1300, 1300, 1350, 1350,
           1350, 1350, 1350, 1350, 1350, 1350, 1350, 1650, 1650, 1700, 1700, 1700, 1700, 1700, 1850, 1850, 1850, 1850,
@@ -104,6 +90,7 @@ class Genotype:
         self.item_chromosome = item
         self.stock_chromosome = stock
         self.fitness = 0
+        # self.update_stock(self, stock, piece, price)
 
     def print_phenotype(self, piece):
         item_pheno = []
@@ -222,7 +209,7 @@ class GA:
             mutating_pieces += bin
             child.remove(bin)
         mutating_pieces.sort()
-        child += self.FFD(mutating_pieces)[0]
+        child += self.FF(mutating_pieces)[0]
 
         geno = Genotype(child)
         geno.update_stock(self.stock, self.piece, self.price)
@@ -302,12 +289,12 @@ class GA:
 
         if len(rm_dup2[0]) > 0:
             rm_dup2[0].sort()
-            chro1 = self.FFD(rm_dup2[0])
+            chro1 = self.FF(rm_dup2[0])
             child1 += chro1[0]
 
         if len(rm_dup1[0]) > 0:
             rm_dup1[0].sort()
-            chro2 = self.FFD(rm_dup1[0])
+            chro2 = self.FF(rm_dup1[0])
             child2 += chro2[0]
 
         geno1 = Genotype(child1)
@@ -339,8 +326,6 @@ class GA:
             item_chromosome.append(solution_pieces)
             stock_chromosome.append(random_stock)
         return [item_chromosome, stock_chromosome]
-
-
     def FFD1(stock, piece, piece_mapping):
         def piece_sum(piece_map):
             total = 0
@@ -370,9 +355,8 @@ class GA:
             item_chromosome.append(solution_pieces)
             stock_chromosome.append(random_stock)
         return [item_chromosome, stock_chromosome]
-
     # , stock, piece, piece_mapping
-    def FFD(self,piece_mapping):
+    def FF(self, piece_mapping):
         def piece_sum(piece_map):
             total = 0
             for p in piece_map:
@@ -385,7 +369,7 @@ class GA:
         copy_piece_map[:] = piece_mapping[:]
         # copy_piece_map.sort()
         while len(copy_piece_map) > 0:
-            _yield = float('-inf')
+            _yield = float('inf')
             best_solution = None
             best_stock = None
             for stock_size in self.stock:
@@ -395,10 +379,12 @@ class GA:
                     if stock_size - piece_sum(solution_pieces) >= item:
                         solution_pieces.append(piece_index)
                 # current_yield = float((stock - piece_sum(solution_pieces))/float(stock))*float(self.price[stock])
-                current_yield = (float(piece_sum(solution_pieces)))/float(self.price[stock_size])
-                # current_yield = float(stock - piece_sum(solution_pieces))*float(self.price[stock])
+                # current_yield = (float(piece_sum(solution_pieces)))/float(self.price[stock_size])
+                # current_yield = (float(piece_sum(solution_pieces)))
 
-                if current_yield > _yield:
+                current_yield = float(stock_size - piece_sum(solution_pieces))*float(self.price[stock_size])
+
+                if current_yield < _yield:
                     # print PRICE2[stock]
                     _yield = current_yield
                     # _yield = piece_sum(solution_pieces) / stock
@@ -418,61 +404,61 @@ class GA:
         return [item_chromosome, stock_chromosome]
 
 
-    def FF(self,stock, piece, piece_mapping):
-        def piece_sum(piece_map):
-            total = 0
-            for p in piece_map:
-                total += piece[p]
-            return total
+    # def FF(self,stock, piece, piece_mapping):
+    #     def piece_sum(piece_map):
+    #         total = 0
+    #         for p in piece_map:
+    #             total += piece[p]
+    #         return total
+    #
+    #     item_chromosome = []
+    #     stock_chromosome = []
+    #     copy_piece_map = []
+    #     copy_piece_map[:] = piece_mapping[:]
+    #     # copy_piece_map.sort()
+    #     while len(copy_piece_map) > 0:
+    #         _yield = 0
+    #         best_solution = None
+    #         best_stock = None
+    #         for stock_size in stock:
+    #             solution_pieces = []
+    #             for piece_index in reversed(copy_piece_map):
+    #                 item = piece[piece_index]
+    #                 if stock_size - piece_sum(solution_pieces) >= item:
+    #                     solution_pieces.append(piece_index)
+    #
+    #             if float(piece_sum(solution_pieces)) / stock_size > _yield:
+    #                 _yield = piece_sum(solution_pieces) / stock_size
+    #                 best_solution = solution_pieces
+    #                 best_stock = stock_size
+    #                 # elif(float(piece_sum(solution_pieces)) / stock == _yield):
+    #                 #     if random.randint(1,5)==2:
+    #                 #         _yield = piece_sum(solution_pieces) / stock
+    #                 #         best_solution = solution_pieces
+    #                 #         best_stock = stock
+    #
+    #         item_chromosome.append(best_solution)
+    #         stock_chromosome.append(best_stock)
+    #         for sol in best_solution:
+    #             copy_piece_map.remove(sol)
+    #
+    #     return [item_chromosome, stock_chromosome]
 
-        item_chromosome = []
-        stock_chromosome = []
-        copy_piece_map = []
-        copy_piece_map[:] = piece_mapping[:]
-        # copy_piece_map.sort()
-        while len(copy_piece_map) > 0:
-            _yield = 0
-            best_solution = None
-            best_stock = None
-            for stock_size in stock:
-                solution_pieces = []
-                for piece_index in reversed(copy_piece_map):
-                    item = piece[piece_index]
-                    if stock_size - piece_sum(solution_pieces) >= item:
-                        solution_pieces.append(piece_index)
 
-                if float(piece_sum(solution_pieces)) / stock_size > _yield:
-                    _yield = piece_sum(solution_pieces) / stock_size
-                    best_solution = solution_pieces
-                    best_stock = stock_size
-                    # elif(float(piece_sum(solution_pieces)) / stock == _yield):
-                    #     if random.randint(1,5)==2:
-                    #         _yield = piece_sum(solution_pieces) / stock
-                    #         best_solution = solution_pieces
-                    #         best_stock = stock
-
-            item_chromosome.append(best_solution)
-            stock_chromosome.append(best_stock)
-            for sol in best_solution:
-                copy_piece_map.remove(sol)
-
-        return [item_chromosome, stock_chromosome]
-
-
-    def random_solution(self,geno,piece_mapping):
+    def random_solution(self,geno):
         copy_piece_mapping = []
-        copy_piece_mapping[:] = piece_mapping[:]
+        copy_piece_mapping[:] = self.piece_map[:]
         random.shuffle(copy_piece_mapping)
-        geno.item_chromosome, geno.stock_chromosome = self.FFD(copy_piece_mapping)
+        geno.item_chromosome, geno.stock_chromosome = self.FF(copy_piece_mapping)
         geno.update_stock(self.stock, self.piece, self.price)
         # solution.append({"length": random_stock, "solution_pieces": solution_pieces})
         return geno
 
 
-    def random_population(self,population_size, stock, piece, piece_mapping, price):
+    def random_population(self,population_size):
         population = []
         for i in xrange(0, population_size):
-            population.append(self.random_solution(Genotype(),piece_mapping))
+            population.append(self.random_solution(Genotype()))
         return population
 
 
@@ -498,7 +484,8 @@ class GA:
     def run(self, iteration, population_size=50, mutation_rate=0.00):
         print "running EA_stock_cutting..."
         mutation_rate = mutation_rate
-        population = self.random_population(population_size, self.stock, self.piece, self.piece_map, self.price)
+        # population = self.random_population(population_size, self.stock, self.piece, self.piece_map, self.price)
+        population = self.random_population(population_size)
 
         # print population
         # while lowest > 3999:
@@ -570,62 +557,11 @@ class GA:
 
 
 if __name__ == '__main__':
-    if False:
-        geno1 = random_solution(Genotype(), piece=PIECE, piece_mapping=PIECE_map, stock=STOCK, price=PRICE)
-        geno2 = random_solution(Genotype(), piece=PIECE, piece_mapping=PIECE_map, stock=STOCK, price=PRICE)
-        print geno1.item_chromosome
-        print geno2.item_chromosome
-        child1, child2 = Genotype.crossover(geno1.item_chromosome, geno2.item_chromosome, STOCK, PIECE, PRICE)
-        print "---"
-        print child1.stock_chromosome
-        print child1.fitness
 
-        print "--"
-        print child2.item_chromosome
-        print geno2.item_chromosome
-    if False:
-        for i in xrange(0, 10000):
-            chro1 = FFD(STOCK, PIECE, PIECE_map)
-            chro2 = FFD(STOCK, PIECE, PIECE_map)
-
-            geno1 = Genotype(chro1[0], chro1[1])
-            geno2 = Genotype(chro2[0], chro2[1])
-
-            geno1 = random_solution(Genotype(), piece=PIECE, piece_mapping=PIECE_map, stock=STOCK, price=PRICE)
-            geno2 = random_solution(Genotype(), piece=PIECE, piece_mapping=PIECE_map, stock=STOCK, price=PRICE)
-
-            child1, child2 = Genotype.crossover(geno1.item_chromosome, geno2.item_chromosome, STOCK, PIECE, PRICE)
-            total1 = 0
-            for i in child1.item_chromosome:
-                total1 += len(i)
-            if total1 != 20:
-                print "@@"
-
-            saw1 = set()
-            for l in child1.item_chromosome:
-                for i in set(l):
-                    if i in saw1:
-                        print "dup TT"
-                        sys.exit()
-                    else:
-                        saw1.add(i)
-            saw2 = set()
-            for l in child2.item_chromosome:
-                for i in set(l):
-                    if i in saw2:
-                        print "dup TT"
-                        sys.exit()
-                    else:
-                        saw2.add(i)
-            total2 = 0
-
-            for i in child2.item_chromosome:
-                total2 += len(i)
-            if total2 != 20:
-                print "@@"
-    # start
-    ga = GA(data2)
-    geno, fitness = ga.run(iteration=20, population_size=300, mutation_rate=0.3)
+    start_time = time.time()
+    ga = GA(data1)
+    geno, fitness = ga.run(iteration=10, population_size=50, mutation_rate=0.3)
     geno.print_solution(ga.piece, ga.stock)
+    print("---GA runtime: %s seconds --- \n" % (time.time() - start_time))
     print fitness
-    # print FFD(STOCK,PIECE,PIECE_map)
+
