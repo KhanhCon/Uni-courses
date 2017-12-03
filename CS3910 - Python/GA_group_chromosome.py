@@ -551,7 +551,8 @@ if __name__ == '__main__':
     }
     start_time = time.time()
     ga = GA(data3)
-    geno, fitness = ga.run(iteration=15, population_size=150, mutation_rate=0.1)
+    geno, fitness = ga.run(iteration=15, population_size=75, mutation_rate=0.1)
+    total_time = time.time() - start_time
     ga.print_geno(geno.item_chromosome)
-    print("---GA runtime: %s seconds --- \n" % (time.time() - start_time))
+    print("---GA runtime: %s seconds --- \n" % (total_time))
     print fitness

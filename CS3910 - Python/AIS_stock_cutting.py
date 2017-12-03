@@ -360,6 +360,7 @@ class AIS:
         fitness = self.calculate_fitness(child)
         geno = Genotype(fitness, child)
         # geno.update_stock(self.stock, self.piece, self.price)
+        # print "mutate"
         return geno
 
     def random_chromosome(self, piece_mapping):
@@ -454,6 +455,7 @@ class AIS:
             if best_fitness < population[-1].fitness:
                 print "WRONG"
 
+        return population[-1]
         self.print_geno(population[-1])
         print population[-1].fitness
         print best_fitness
@@ -520,9 +522,11 @@ if __name__ == '__main__':
     }
 
     start_time = time.time()
-    ais = AIS(data3, replacement_number=7, population_size=15, clone_size_factor=5, mutate_constant=0.4)
-    ais.run(iteration=5)
-    print("---GA runtime: %s seconds --- \n" % (time.time() - start_time))
+    ais = AIS(data3, replacement_number=5, population_size=2, clone_size_factor=5, mutate_constant=0.4)
+    geno = ais.run(iteration=5)
+    total_time = time.time() - start_time
+    ais.print_geno(geno)
+    print("---GA runtime: %s seconds --- \n" % (total_time))
 
     # pop = ais.random_population()
     # # print(dir(pop))
@@ -553,3 +557,14 @@ if __name__ == '__main__':
         # print ais.mutate(geno, 1765).fitness
         # print ais.mutate(geno, 1765).fitness
         # print ais.mutate(geno, 1765).fitness
+    # pop = ais.random_population()
+    # for i in pop:
+    #     print i.fitness
+    # print "----"
+    # clone_pool = []
+    # for _ in xrange(0, 3):
+    #     clone_pool += [ais.mutate(geno, pop[-1].fitness) for geno in pop]
+    # clone_pool = [ais.mutate(geno, pop[-1].fitness) for geno in pop]*3
+    # pop += clone_pool
+    # for i in pop:
+    #     print i.fitness
