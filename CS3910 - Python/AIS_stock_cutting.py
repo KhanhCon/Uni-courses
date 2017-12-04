@@ -522,8 +522,8 @@ if __name__ == '__main__':
     }
 
     start_time = time.time()
-    ais = AIS(data3, replacement_number=5, population_size=2, clone_size_factor=5, mutate_constant=0.4)
-    geno = ais.run(iteration=5)
+    ais = AIS(data3, replacement_number=50, population_size=50, clone_size_factor=1, mutate_constant=0.4)
+    geno = ais.run(iteration=50)
     total_time = time.time() - start_time
     ais.print_geno(geno)
     print("---GA runtime: %s seconds --- \n" % (total_time))
