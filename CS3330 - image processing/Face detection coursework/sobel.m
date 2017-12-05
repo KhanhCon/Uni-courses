@@ -6,7 +6,7 @@ function [ edge_detected ] = sobel( img )
 %bw = uint8((0.299*double(img(:,:,1))+0.587*double(img(:,:,2))+0.114*double(img(:,:,3))));
 %bw = rgb2gray(img);
 bw =img;
-figure(),imshow(bw)
+%figure(),imshow(bw)
 
 bwdbl = double(bw);
 
@@ -42,10 +42,16 @@ Gy = OUT;
 
 resX = conv2(bwdbl, maskx);
 resY = conv2(bwdbl, masky);
-magnitude = sqrt(Gx.^2 + Gy.^2);
+magnitude = sqrt(Gy.^2 + Gx.^2);
 direction = atan(Gy/Gx);
-thresh = magnitude < 101;
-magnitude(thresh) = 0;
+%[magnitude,Gdir] = imgradient(img);
+%magnitude = uint8(magnitude);
+level = graythresh(bw);
+thresh = level*255;
+%thresh = magnitude < 100;
+magnitude(magnitude<thresh) = 0;
+magnitude(magnitude>=thresh) = 1;
+magnitude = logical(magnitude);
 edge_detected = magnitude;
 %figure(),imshow(edge_detected),title('edged');
 

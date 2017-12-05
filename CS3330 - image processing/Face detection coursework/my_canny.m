@@ -5,14 +5,12 @@ function edge_img = my_canny( img, high_thresh, low_thresh )
 %   points.
     mask = fspecial('gaussian',5,1);
     filtered_img = imfilter(img,mask);
-    
-    
     [grad_mag,grad_dir] = calculate_gradient(filtered_img);
     %mean = mean2(img);
     %std = std2(img);
     %high_thresh = mean+std;
     %low_thresh = mean-std;
-    %[grad_mag,grad_dir] = imgradient(img);
+    [grad_mag,grad_dir] = imgradient(img);
     grad_dir = discretize_gradient(grad_mag);
     maxima_img = non_maxima_suppress(grad_mag,grad_dir);
     strong_edge = threshold_matrix(maxima_img,high_thresh);
@@ -20,6 +18,7 @@ function edge_img = my_canny( img, high_thresh, low_thresh )
     edge_img = hysteresis(strong_edge,weak_edge);
     %scale_mask = fspecial('gaussian',5,2); 
     %edge_img = imfilter(edge_img,scale_mask);
+    
 end
 
 
