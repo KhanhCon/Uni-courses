@@ -2,8 +2,8 @@ function [ edge_detected ] = sobel( img )
 %SOBEL Summary of this function goes here
 %   Detailed explanation goes here
 
-    bw = uint8((1/3)*(double(img(:,:,1))+double(img(:,:,2))+double(img(:,:,3))));
-% bw = rgb2gray(clipped);
+bw = uint8((1/3)*(double(img(:,:,1))+double(img(:,:,2))+double(img(:,:,3))));
+bw = rgb2gray(img);
 figure(),imshow(bw)
 
 bwdbl = double(bw);
@@ -20,7 +20,7 @@ for idx = 1:(r-3)
 end
 Gx = OUT;
 
-figure(),imshow(Gx);
+%figure(),imshow(Gx);
 masky = [1 2 1;0 0 0;-1 -2 -1];
 
 for idx = 1:(r-3)
@@ -32,7 +32,7 @@ for idx = 1:(r-3)
 end
 Gy = OUT;
 
-figure(),imshow(Gy);
+%figure(),imshow(Gy);
 
 %%% Normalise the results
 %edge_detected = sqrt(Gx.^2 + Gy.^2);
@@ -40,12 +40,12 @@ figure(),imshow(Gy);
 
 resX = conv2(bwdbl, maskx);
 resY = conv2(bwdbl, masky);
-edge_detected = sqrt(Gx.^2 + Gy.^2);
+magnitude = sqrt(Gx.^2 + Gy.^2);
 direction = atan(Gy/Gx);
-thresh = edge_detected < 101;
-edge_detected(thresh) = 0;
-
-figure(),imshow(edge_detected),label('edeged');
+thresh = magnitude < 101;
+magnitude(thresh) = 0;
+edge_detected = magnitude;
+figure(),imshow(edge_detected),title('edged');
 
 end
 

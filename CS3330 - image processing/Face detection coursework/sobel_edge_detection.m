@@ -1,7 +1,7 @@
 
 original = imread('rubic.png');
 
-imshow(original)
+%imshow(original)
 
 clipped = original(:,1:550,:);
 
@@ -10,8 +10,8 @@ imshow(clipped);
 
 % convert to grayscale
 
-bw = uint8((1/3)*(double(clipped(:,:,1))+double(clipped(:,:,2))+double(clipped(:,:,3))));
-% bw = rgb2gray(clipped);
+%bw = uint8((1/3)*(double(clipped(:,:,1))+double(clipped(:,:,2))+double(clipped(:,:,3))));
+bw = rgb2gray(clipped);
 figure(),imshow(bw)
 
 bwdbl = double(bw);
