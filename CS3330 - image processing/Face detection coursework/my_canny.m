@@ -5,10 +5,15 @@ function edge_img = my_canny( img, high_thresh, low_thresh )
 %   points.
     mask = fspecial('gaussian',5,1);
     filtered_img = imfilter(img,mask);
-    %mean = mean2(img);
-    %high_thresh = mean+mean.*0.25;
-    %low_thresh = mean+mean.*0.25;
+    
+    
     [grad_mag,grad_dir] = calculate_gradient(filtered_img);
+    %mean = mean2(img);
+    %std = std2(img);
+    %high_thresh = mean+std;
+    %low_thresh = mean-std;
+    %[grad_mag,grad_dir] = imgradient(img);
+    grad_dir = discretize_gradient(grad_mag);
     maxima_img = non_maxima_suppress(grad_mag,grad_dir);
     strong_edge = threshold_matrix(maxima_img,high_thresh);
     weak_edge = threshold_matrix(maxima_img,low_thresh);
@@ -16,6 +21,19 @@ function edge_img = my_canny( img, high_thresh, low_thresh )
     %scale_mask = fspecial('gaussian',5,2); 
     %edge_img = imfilter(edge_img,scale_mask);
 end
+
+
+
+function [lowThresh, highThresh] = selectThresholds(magGrad)
+
+[m,n] = size(magGrad);
+counts=imhist(magGrad, 64);
+    highThresh = find(cumsum(counts) > .7*m*n,1,'first') / 64;
+    highThresh = highThresh*255;
+    lowThresh = highThresh*.4;
+    
+end
+
 
 function [grad_mag,grad_dir] = calculate_gradient(img)
 %CALCULATE_GRADIENT calculates the gradient magnitude and gradient
@@ -28,7 +46,7 @@ function [grad_mag,grad_dir] = calculate_gradient(img)
     resY = conv2(double(img), masky);
     grad_mag = sqrt(resX.^2 + resY.^2);
     grad_dir = atan(resY/resX);
-     
+    
 end
 
 function grad_dir = discretize_gradient(grad_angle)

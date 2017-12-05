@@ -2,8 +2,10 @@ function [ edge_detected ] = sobel( img )
 %SOBEL Summary of this function goes here
 %   Detailed explanation goes here
 
-bw = uint8((1/3)*(double(img(:,:,1))+double(img(:,:,2))+double(img(:,:,3))));
-bw = rgb2gray(img);
+%bw = uint8((1/3)*(double(img(:,:,1))+double(img(:,:,2))+double(img(:,:,3))));
+%bw = uint8((0.299*double(img(:,:,1))+0.587*double(img(:,:,2))+0.114*double(img(:,:,3))));
+%bw = rgb2gray(img);
+bw =img;
 figure(),imshow(bw)
 
 bwdbl = double(bw);
@@ -45,7 +47,7 @@ direction = atan(Gy/Gx);
 thresh = magnitude < 101;
 magnitude(thresh) = 0;
 edge_detected = magnitude;
-figure(),imshow(edge_detected),title('edged');
+%figure(),imshow(edge_detected),title('edged');
 
 end
 
