@@ -40,8 +40,8 @@ Gy = OUT;
 %edge_detected = sqrt(Gx.^2 + Gy.^2);
 
 
-resX = conv2(bwdbl, maskx);
-resY = conv2(bwdbl, masky);
+%resX = conv2(bwdbl, maskx);
+%resY = conv2(bwdbl, masky);
 magnitude = sqrt(Gy.^2 + Gx.^2);
 direction = atan(Gy/Gx);
 %[magnitude,Gdir] = imgradient(img);
