@@ -93,8 +93,10 @@ figure();imshow(morphological_closed_img);title('eroded');
 %Image 
 img_template = rgb2gray(imread('img/original.png'));
 hist = imhist(img_template);
-img = rgb2gray(imread('face/gillian1.jpg'));
-img = histeq(img);
+% file = 'jim3.jpg';
+file_name = strcat('face/',file);
+img = rgb2gray(imread(file_name));
+% img = histeq(img);
  figure();imshow(img);title('improve contrast');
 %Apple sobel edge detection
 edge_img = edge(img,'sobel');
@@ -137,30 +139,30 @@ eroded3_stats = regionprops(eroded3_CC,'all');
   %Aspect ratio rule
  idx_boundingbox = [];
  for k = 1 : length(eroded3_stats) 
-     thisBB = eroded3_stats(k).BoundingBox; 
-     aspect_ratio = thisBB(3)/thisBB(4);
+     BB = eroded3_stats(k).BoundingBox; 
+     aspect_ratio = BB(3)/BB(4);
      if aspect_ratio > 0.8 && aspect_ratio < 4.0
          idx_boundingbox = [idx_boundingbox k];
      end
  end
 
 aspect_ratio_img = ismember(labelmatrix(eroded3_CC), idx_boundingbox);
-% figure(),imshow(aspect_ratio_img);
+figure(),imshow(aspect_ratio_img);
 
 
     %The orientation angle of eyes is not greater than 45 degrees.
 angle_img_CC = bwconncomp(aspect_ratio_img,4);
 stats = regionprops(angle_img_CC,'Orientation');
-angle_idx = find([stats.Orientation] <= 45); 
+angle_idx = find([stats.Orientation] <= 90); 
 angle_img = ismember(labelmatrix(angle_img_CC), angle_idx);
-%figure(),imshow(angle_img),title('angle');
+figure(),imshow(angle_img),title('angle');
     
     %remove small component
-CC_rm2 = bwconncomp(angle_img,4);
-stats_rm2 = regionprops(CC_rm2,'Area');
-idx_rm2 = find([stats_rm2.Area] > 50); 
-rm2_img = ismember(labelmatrix(CC_rm2), idx_rm2);
-%figure(),imshow(rm2_img),title('rm2');
+ CC_rm2 = bwconncomp(angle_img,4);
+ stats_rm2 = regionprops(CC_rm2,'Area');
+ idx_rm2 = find([stats_rm2.Area] > 150); 
+ rm2_img = ismember(labelmatrix(CC_rm2), idx_rm2);
+ figure(),imshow(rm2_img),title('rm2');
 
     %no large than twice
 size_img_CC = bwconncomp(rm2_img,4);
@@ -170,84 +172,88 @@ size_img_stats = regionprops(size_img_CC,'all');
 
 idx_size = [];
 [y,x] = size(angle_img);
- for i = 1 : length(size_img_stats) 
-     thisCentroid1 = size_img_stats(i).Centroid;
-     thisBB = size_img_stats(i).BoundingBox;
-     thisArea = size_img_stats(i).Area;
-     thisOrientation = size_img_stats(i).Orientation;
-     padding = 60.0;
+ for i1 = 1 : length(size_img_stats) 
+     thisCentroid1 = size_img_stats(i1).Centroid;
+     BB = size_img_stats(i1).BoundingBox;
+     Area1 = size_img_stats(i1).Area;
+     Orientation1 = size_img_stats(i1).Orientation;
+     padding = 40.0;
      padding_top = 80.0;
      for  i2 = 1:length(size_img_stats) 
-        
-        bb2 = size_img_stats(i2).BoundingBox;
-        center1 = [thisBB(1)+thisBB(3)/2,thisBB(2)+thisBB(4)/2 ];
-        center2 = [bb2(1)+bb2(3)/2, bb2(2)+bb2(4)/2];
+        if i1 == i2
+            continue
+        end
+        BB2 = size_img_stats(i2).BoundingBox;
+        center1 = [BB(1)+BB(3)/2,BB(2)+BB(4)/2 ];
+        center2 = [BB2(1)+BB2(3)/2, BB2(2)+BB2(4)/2];
         slope_angle = atan2(center2(2)-center1(2),center2(1)-center1(1))* 180/pi;
         slope_angle = abs(slope_angle);
         if slope_angle >  90.0
             slope_angle = 180.0 - slope_angle;
         end
 %       slope_angle = (tan(line1)-tan(line2))/(1+tan(line1)*tan(line2));
-        ratio = thisArea/size_img_stats(i2).Area;
-        orient_diff = thisOrientation - size_img_stats(i2).Orientation;
+        ratio = Area1/size_img_stats(i2).Area;
+%         ratio = BB1(3)*BB1(4)/BB2(3)*BB2(4);
+        orient_diff = Orientation1 - size_img_stats(i2).Orientation;
 %         slope_angle = (atan((thisCentroid1(2)-thisCentroid1(1))/(thisCentroid1(2)-thisCentroid1(1))) - atan((3-1)/(3-0))) * 180/pi
-        if thisBB(1) > size_img_stats(i2).BoundingBox(1)
-           distance = (thisBB(1) + thisBB(3)) - size_img_stats(i2).BoundingBox(1);
-        else
-            distance =  size_img_stats(i2).BoundingBox(1) + size_img_stats(i2).BoundingBox(3)-thisBB(1);
-        end
-        if ratio > 0.5 && ratio < 2.0 && abs(orient_diff) < 30.0 && padding<thisBB(1) && thisBB(1)+thisBB(3)<x-padding  && padding_top<thisBB(2)&& thisBB(2)+thisBB(4)<y -padding_top && abs(distance) > 10  && slope_angle < 20.0
-            
-            idx_size = [idx_size i];
+        far_from_border1 = padding<BB(1) && BB(1)+BB(3)<x-padding  && padding_top<BB(2)&& BB(2)+BB(4)<y-padding_top;
+        far_from_border2 = padding<BB2(1) && BB2(1)+BB2(3)<x-padding  && padding_top<BB2(2)&& BB2(2)+BB2(4)<y-padding_top;
+        if ratio > 0.33 && ratio < 3.0 && orient_diff < 30.0 && far_from_border1 && far_from_border2 && slope_angle < 15.0
+            idx_size = [idx_size i1 i2];
             break;
         end
      end
  end
 size_img = ismember(labelmatrix(size_img_CC), idx_size);
-figure(),imshow(size_img),title('all');
+figure(),imshow(img),title('all');
 
 final_CC = bwconncomp(size_img,4); %%final image
-%L = labelmatrix(final_CC);
 final_stats = regionprops(final_CC,'all');
-for k = 3 : 3 
-    thisBB = final_stats(k).BoundingBox; 
-    rectangle('Position', [thisBB(1),thisBB(2),thisBB(3),thisBB(4)], 'EdgeColor','r','LineWidth',2 ); 
+img_out = img;
+for k = 1 : length(final_stats)
+    BB = final_stats(k).BoundingBox;
+    f = @() rectangle('Position', [BB(1),BB(2),BB(3),BB(4)]);
+    params = {{'EdgeColor','r','LineWidth',2}};
+    img_out = insertInImage(img_out,f,params);
+    rectangle('Position', [BB(1),BB(2),BB(3),BB(4)], 'EdgeColor','r','LineWidth',2 ); 
 end
-
+ out_file_name = strcat('eyes_detected/',file);
+ imwrite(img_out,out_file_name);
+    
 
     %orientation difference
-orient_diff_CC = bwconncomp(size_img,4);
-orient_diff_stats = regionprops(orient_diff_CC,'All');
-idx_orient_diff = [];
-thisBB = orient_diff_stats(1).BoundingBox;
-bb2 = orient_diff_stats(3).BoundingBox;
-center1 = [thisBB(1)+thisBB(3)/2,thisBB(2)+thisBB(4)/2 ];
-center2 = [bb2(1)+bb2(3)/2, bb2(2)+bb2(4)/2];
-line([center1(1) center2(1)],[center1(2) center2(2)])
-line([orient_diff_stats(1).Centroid(1) orient_diff_stats(3).Centroid(1)],[orient_diff_stats(1).Centroid(2) orient_diff_stats(3).Centroid(2)])
-slope_angle = atan2(center2(2)-center1(2),center2(1)-center1(1))* 180/pi
-slope_angle = abs(slope_angle);
-if slope_angle > 90.0
-    slope_angle = 180.0 - slope_angle
-end
-
-
- for j = 1 : length(orient_diff_stats) 
-      thisBB = orient_diff_stats(j).BoundingBox;
-      thisCentroid1 = orient_diff_stats(j).Centroid;  
-      for  j2 = 1:length(orient_diff_stats) 
-         thisCentroid2 = orient_diff_stats(j2).Centroid;
-        
-        bb2 = size_img_stats(i2).BoundingBox;
-         center1 = [thisBB(1)+thisBB(3)/2,thisBB(2)+thisBB(4)/2 ];
-         center2 = [bb2(1)+bb2(3)/2, bb2(2)+bb2(4)/2];
-         slope_angle = atan2(center2(2)-center1(2),center2(1)-center1(1))* 180/pi;
-        
-         line([center1(1) center2(1)],[center1(2) center2(2)])
-         
-      end
-  end
-orient_diff_img = ismember(labelmatrix(orient_diff_CC), idx_orient_diff);
+% orient_diff_CC = bwconncomp(size_img,4);
+% orient_diff_stats = regionprops(orient_diff_CC,'All');
+% idx_orient_diff = [];
+% BB1 = orient_diff_stats(1).BoundingBox;
+% BB2 = orient_diff_stats(3).BoundingBox;
+% center1 = [BB1(1)+BB1(3)/2,BB1(2)+BB1(4)/2 ];
+% center2 = [BB2(1)+BB2(3)/2, BB2(2)+BB2(4)/2];
+% line([center1(1) center2(1)],[center1(2) center2(2)])
+% line([orient_diff_stats(1).Centroid(1) orient_diff_stats(3).Centroid(1)],[orient_diff_stats(1).Centroid(2) orient_diff_stats(3).Centroid(2)])
+% slope_angle = atan2(center2(2)-center1(2),center2(1)-center1(1))* 180/pi
+% slope_angle = abs(slope_angle);
+% if slope_angle > 90.0
+%     slope_angle = 180.0 - slope_angle
+% end
+% 
+% 
+%  for j = 1 : length(orient_diff_stats) 
+%       BB1 = orient_diff_stats(j).BoundingBox;
+%       thisCentroid1 = orient_diff_stats(j).Centroid;  
+%       for  j2 = 1:length(orient_diff_stats) 
+%          thisCentroid2 = orient_diff_stats(j2).Centroid;
+%         
+%         BB2 = size_img_stats(i2).BoundingBox;
+%          center1 = [BB1(1)+BB1(3)/2,BB1(2)+BB1(4)/2 ];
+%          center2 = [BB2(1)+BB2(3)/2, BB2(2)+BB2(4)/2];
+%          slope_angle = atan2(center2(2)-center1(2),center2(1)-center1(1))* 180/pi;
+%         
+%          line([center1(1) center2(1)],[center1(2) center2(2)])
+%          
+%       end
+%   end
+% orient_diff_img = ismember(labelmatrix(orient_diff_CC), idx_orient_diff);
 %figure(),imshow(orient_diff_img),title('orient diff');
 
 
