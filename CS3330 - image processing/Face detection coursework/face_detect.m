@@ -220,11 +220,11 @@ orient_diff_CC = bwconncomp(size_img,4);
 orient_diff_stats = regionprops(orient_diff_CC,'All');
 idx_orient_diff = [];
 thisBB = orient_diff_stats(1).BoundingBox;
-bb2 = size_img_stats(3).BoundingBox;
+bb2 = orient_diff_stats(3).BoundingBox;
 center1 = [thisBB(1)+thisBB(3)/2,thisBB(2)+thisBB(4)/2 ];
 center2 = [bb2(1)+bb2(3)/2, bb2(2)+bb2(4)/2];
 line([center1(1) center2(1)],[center1(2) center2(2)])
-line([size_img_stats(1).Centroid(1) size_img_stats(3).Centroid(1)],[size_img_stats(1).Centroid(2) size_img_stats(3).Centroid(2)])
+line([orient_diff_stats(1).Centroid(1) orient_diff_stats(3).Centroid(1)],[orient_diff_stats(1).Centroid(2) orient_diff_stats(3).Centroid(2)])
 slope_angle = atan2(center2(2)-center1(2),center2(1)-center1(1))* 180/pi
 slope_angle = abs(slope_angle);
 if slope_angle > 90.0
@@ -234,9 +234,9 @@ end
 
  for j = 1 : length(orient_diff_stats) 
       thisBB = orient_diff_stats(j).BoundingBox;
-      thisCentroid1 = size_img_stats(j).Centroid;  
+      thisCentroid1 = orient_diff_stats(j).Centroid;  
       for  j2 = 1:length(orient_diff_stats) 
-         thisCentroid2 = size_img_stats(j2).Centroid;
+         thisCentroid2 = orient_diff_stats(j2).Centroid;
         
         bb2 = size_img_stats(i2).BoundingBox;
          center1 = [thisBB(1)+thisBB(3)/2,thisBB(2)+thisBB(4)/2 ];
