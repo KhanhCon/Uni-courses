@@ -1,4 +1,4 @@
-
+%{
 %figure(),imshow(img);
 %resize 300×225
 
@@ -11,7 +11,7 @@
 %edge_img = edge(resized,'sobel');%use it for now
 %figure(),imshow(edge_img);
 
-%{
+
 %Image 
 img = rgb2gray(imread('img/original.png'));
 %Apple sobel edge detection
@@ -90,12 +90,16 @@ eroded_img = imerode(morphological_closed_img,SE);
 
 figure();imshow(morphological_closed_img);title('eroded');
 %}
+
 %Image 
 img_template = rgb2gray(imread('img/original.png'));
 hist = imhist(img_template);
+
 % file = 'jim3.jpg';
 file_name = strcat('face/',file);
 img = rgb2gray(imread(file_name));
+h = fspecial('laplacian');
+%    img = imfilter(img,h);
 % img = histeq(img);
  figure();imshow(img);title('improve contrast');
 %Apple sobel edge detection
@@ -112,16 +116,7 @@ CC = bwconncomp(negative_dilated_img,4);
 stats_first = regionprops(CC,'Area');
 idx = find([stats_first.Area] > 300); 
 filled_img = imcomplement(ismember(labelmatrix(CC), idx));
-%figure();imshow(filled_img);
-% CC_test = bwconncomp(filled_img_first,4);
-% stats_test = regionprops(CC_test,'Area');
-% 
-% idx_test = find([stats_test.Area] > 500);
-% filled_img = ismember(labelmatrix(CC_test), idx_test);
-% 
  
-
-
 %Erode image three times
 eroded_img = imerode(filled_img,SE);
 eroded_img2 = imerode(eroded_img,SE);
@@ -129,10 +124,9 @@ eroded_img3 = imerode(eroded_img2,SE);
 eroded_img4 = imerode(eroded_img3,SE);
 eroded_img5 = imerode(eroded_img4,SE);
 
-
 % figure();imshow(eroded_img3),title('erode');
 
-%Apple rules
+%Apply rules
 eroded3_CC = bwconncomp(eroded_img3,4);
 eroded3_stats = regionprops(eroded3_CC,'all');
     
@@ -160,7 +154,7 @@ figure(),imshow(angle_img),title('angle');
     %remove small component
  CC_rm2 = bwconncomp(angle_img,4);
  stats_rm2 = regionprops(CC_rm2,'Area');
- idx_rm2 = find([stats_rm2.Area] > 150); 
+ idx_rm2 = find([stats_rm2.Area] > 120); 
  rm2_img = ismember(labelmatrix(CC_rm2), idx_rm2);
  figure(),imshow(rm2_img),title('rm2');
 
@@ -198,7 +192,8 @@ idx_size = [];
 %         slope_angle = (atan((thisCentroid1(2)-thisCentroid1(1))/(thisCentroid1(2)-thisCentroid1(1))) - atan((3-1)/(3-0))) * 180/pi
         far_from_border1 = padding<BB(1) && BB(1)+BB(3)<x-padding  && padding_top<BB(2)&& BB(2)+BB(4)<y-padding_top;
         far_from_border2 = padding<BB2(1) && BB2(1)+BB2(3)<x-padding  && padding_top<BB2(2)&& BB2(2)+BB2(4)<y-padding_top;
-        if ratio > 0.33 && ratio < 3.0 && orient_diff < 30.0 && far_from_border1 && far_from_border2 && slope_angle < 15.0
+        
+        if ratio > 0.33 && ratio < 3.5 && orient_diff < 30.0 && far_from_border1 && far_from_border2 && slope_angle < 10.0
             idx_size = [idx_size i1 i2];
             break;
         end
@@ -207,7 +202,7 @@ idx_size = [];
 size_img = ismember(labelmatrix(size_img_CC), idx_size);
 figure(),imshow(img),title('all');
 
-final_CC = bwconncomp(size_img,4); %%final image
+final_CC = bwconncomp(size_img,4); %final image
 final_stats = regionprops(final_CC,'all');
 img_out = img;
 for k = 1 : length(final_stats)
@@ -219,8 +214,8 @@ for k = 1 : length(final_stats)
 end
  out_file_name = strcat('eyes_detected/',file);
  imwrite(img_out,out_file_name);
-    
 
+%{
     %orientation difference
 % orient_diff_CC = bwconncomp(size_img,4);
 % orient_diff_stats = regionprops(orient_diff_CC,'All');
@@ -307,4 +302,4 @@ end
 % CC2 = bwconncomp(filled_img2,4);
 % 
 % stats2 = regionprops(CC,'All');
-
+%}
