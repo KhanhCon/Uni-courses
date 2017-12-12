@@ -90,6 +90,7 @@ class GA:
         # self.piece = data["piece"]
         self.price = data["price"]
         self.piece_map = range(0, len(data["piece"]))
+        self.fe_count = 0;
 
     def best_stock(self, item_chromosome):
         def piece_sum(piece_map):
@@ -146,6 +147,7 @@ class GA:
 
     def calculate_fitness(self, item_chromosome):
         best_stocks = self.best_stock(item_chromosome)
+        self.fe_count += 1;
         # # fitness = 0
         # # for stock in best_stocks:
         # #     fitness += self.price[stock]
@@ -445,25 +447,36 @@ class GA:
         min1, min2 = heapq.nsmallest(2, tournament_population, key=lambda x: x.fitness) #Get 2 solution with lowest cost
         return min1, min2
 
-    def run(self, iteration, population_size=50, mutation_rate=0.00):
+    def get_best(self,population,best_geno,best_fitness):
+        currbest = min(population, key=lambda x: x.fitness)
+        if (currbest.fitness < best_fitness):
+            best_geno = currbest
+            best_fitness = currbest.fitness
+        return best_geno, best_fitness
+
+
+    def run(self, function_evaluation, population_size=50, mutation_rate=0.00):
         print "running EA_stock_cutting..."
         mutation_rate = mutation_rate
-
         population = self.random_population(population_size)
 
         best_fitness = 100000
         best_geno = None
-
+        iter = 0
         start_time = time.time()
-        for iter in xrange(0, iteration):
-        # for iter in itertools.repeat(None, iteration):
+        # for iter in xrange(0, function_evaluation):
+        while self.fe_count < function_evaluation:
+        # for iter in itertools.repeat(None, function_evaluation):
 
             newGen = []
 
             while len(newGen) < population_size:
                 prob = random.uniform(0, 1)
-                if prob < mutation_rate:
+                if self.fe_count >= function_evaluation:
+                    best_geno, best_fitness = self.get_best(population + newGen,best_geno,best_fitness)
+                    return best_geno, best_fitness
 
+                if prob < mutation_rate:
                     parent = random.choice(population)
                     child = self.mutation(parent.item_chromosome)
                     newGen.append(child)
@@ -472,23 +485,22 @@ class GA:
                     parent1, parent2 = self.tournament_selection(population)
                     child1, child2 = self.crossover(parent1.item_chromosome, parent2.item_chromosome)
                     newGen.append(child1)
-                    if child1 != child2:
+                    if child1.item_chromosome != child2.item_chromosome:
                         newGen.append(child2)
-            sys.stdout.write('\r')
-            sys.stdout.write("iteration: %s || seconds: %s || mutation rate: %s" % (str(iter), time.time() - start_time, str(mutation_rate)))
-            if iter % 10 == 0:
-                currbest = min(population, key=lambda x: x.fitness)
-                if (currbest.fitness < best_fitness):
-                    best_geno = currbest
-                    best_fitness = currbest.fitness
+
+            # sys.stdout.write('')
+            # sys.stdout.write("\r iteration: %s || seconds: %s || mutation rate: %s" % (str(iter), time.time() - start_time, str(mutation_rate)))
+
+            if iter % 2 == 0:
+                # currbest = min(population, key=lambda x: x.fitness)
+                # if (currbest.fitness < best_fitness):
+                #     best_geno = currbest
+                #     best_fitness = currbest.fitness
+                best_geno, best_fitness = self.get_best(population, best_geno, best_fitness)
             population[:] = newGen[:]
+            iter += 1
 
-
-        currbest = min(population, key=lambda x: x.fitness)
-        if (currbest.fitness < best_fitness):
-            best_geno = currbest
-            best_fitness = currbest.fitness
-        return best_geno, best_fitness
+        return self.get_best(population,best_geno,best_fitness)
 
 
 if __name__ == '__main__':
@@ -551,8 +563,10 @@ if __name__ == '__main__':
     }
     start_time = time.time()
     ga = GA(data3)
-    geno, fitness = ga.run(iteration=15, population_size=75, mutation_rate=0.1)
+    geno, fitness = ga.run(function_evaluation=500, population_size=100, mutation_rate=0.1)
     total_time = time.time() - start_time
     ga.print_geno(geno.item_chromosome)
+
     print("---GA runtime: %s seconds --- \n" % (total_time))
-    print fitness
+    # print fitness
+    print ga.fe_count

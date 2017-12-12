@@ -169,14 +169,9 @@ class AIS:
         self.replacement_number = replacement_number
         self.clone_size_factor = clone_size_factor
         self.mutate_constant = mutate_constant
+        self.fe_count = 0
 
     def print_geno(self, geno):
-        # def piece_sum(piece_map):
-        #     total = 0
-        #     for p in piece_map:
-        #         total += self.piece[p]
-        #     return total
-
         best_stock_chromosome = [None] * len(geno.item_chromosome)
         for i in xrange(0, len(best_stock_chromosome)):
             piece_sum = sum([self.piece[p] for p in geno.item_chromosome[i]])
@@ -237,11 +232,6 @@ class AIS:
         # print "cost: %s" % fitness
 
     def calculate_fitness(self, item_chromosome):
-        # def piece_sum(piece_map):
-        #     total = 0
-        #     for p in piece_map:
-        #         total += self.piece[p]
-        #     return total
 
         best_stock_chromosome = [None] * len(item_chromosome)
         for i in xrange(0, len(best_stock_chromosome)):
@@ -265,6 +255,7 @@ class AIS:
         fitness = 0
         for stock in best_stock_chromosome:
             fitness += self.price[stock]
+        self.fe_count += 1
         return fitness
 
     # # item_chromosome, stock, piece, price
@@ -393,43 +384,43 @@ class AIS:
         item_chromosome = self.FF(copy_piece_mapping)
         fitness = self.calculate_fitness(item_chromosome)
         geno = Genotype(fitness, item_chromosome)
-        # geno.update_stock(self.stock, self.piece, self.price)
-        # solution.append({"length": random_stock, "solution_pieces": solution_pieces})
+
         return geno
 
     def random_population(self):
-        # population = []
-        # for i in xrange(0, self.population_size):
-        #     population.append(self.random_solution())
-        # for _ in itertools.repeat(None, self.population_size):
-        #     population.append(self.random_solution())
+
         population = [self.random_solution() for _ in xrange(0, self.population_size)]
         population.sort(key=lambda x: x.fitness, reverse=True)
-        # return sorted([self.random_solution()]*self.population_size,key=lambda x:x.fitness,reverse=True)
+
         return population
 
     def select(self, population):
         return list(reversed(heapq.nsmallest(self.population_size, population, key=lambda x: x.fitness)))
 
-    def replace_d(self, population):
-        if self.replacement_number == 0:
+    def replace_d(self, population,function_evaluation):
+        if self.replacement_number == 0 or self.fe_count - function_evaluation <= 0:
             return population
-        # for i in xrange(0,self.replacement_number):
-        #     population[i] = self.random_solution() xrange(0, self.replacement_number)
-        population[0:self.replacement_number] = [self.random_solution() for _ in xrange(0, self.clone_size_factor)]
+
+        replacement_number = self.replacement_number if self.fe_count - function_evaluation > self.replacement_number else self.fe_count - function_evaluation
+        population[0:replacement_number] = [self.random_solution() for _ in xrange(0, self.clone_size_factor)]
         population.sort(key=lambda x: x.fitness, reverse=True)
         return population
 
-    def run(self, iteration=10):
+    def run(self, function_evaluation):
         print("Running AIS...")
         population = self.random_population()
         best_fitness = population[-1].fitness
         count = 0
-        # for i in xrange(0,iteration):
-        for _ in  xrange(0, iteration):
+        # for i in xrange(0,function_evaluation):
+        while self.fe_count < function_evaluation:
+        # for _ in xrange(0, function_evaluation):
             clone_pool = []
-            for _ in  xrange(0, self.clone_size_factor):
-                clone_pool += [self.mutate(geno, best_fitness) for geno in population]
+            for _ in xrange(0, self.clone_size_factor):
+                for geno in population:
+                    if self.fe_count >= function_evaluation:
+                        return sorted(population,key=lambda x: x.fitness, reverse=True)[-1]
+                    clone_pool.append(self.mutate(geno, best_fitness))
+                # clone_pool += [self.mutate(geno, best_fitness) for geno in population]
             population += clone_pool
 
             # population += [self.mutate(geno, best_fitness) for geno in population]*self.clone_size_factor
@@ -443,14 +434,14 @@ class AIS:
             # print len(population)
 
             population = self.select(population)
-            population = self.replace_d(population)
+            population = self.replace_d(population,function_evaluation)
             best_fitness = population[-1].fitness
             print best_fitness
             if best_fitness > population[-1].fitness:
                 count = 0
             else:
                 count += 1
-            if count > 4:
+            if count > 100:
                 break
             if best_fitness < population[-1].fitness:
                 print "WRONG"
@@ -522,11 +513,14 @@ if __name__ == '__main__':
     }
 
     start_time = time.time()
-    ais = AIS(data3, replacement_number=50, population_size=50, clone_size_factor=1, mutate_constant=0.4)
-    geno = ais.run(iteration=50)
+    ais = AIS(data3, replacement_number=35, population_size=50, clone_size_factor=4, mutate_constant=1.0)
+    geno = ais.run(function_evaluation=500)
     total_time = time.time() - start_time
     ais.print_geno(geno)
     print("---GA runtime: %s seconds --- \n" % (total_time))
+    print ais.fe_count
+
+
 
     # pop = ais.random_population()
     # # print(dir(pop))
