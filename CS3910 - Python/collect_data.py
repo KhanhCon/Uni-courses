@@ -34,6 +34,6 @@ with open('data10000.csv', 'wb') as csvfile:
     for _ in xrange(0,30):
         ais = AIS_stock_cutting.AIS(data3, replacement_number=25, population_size=50, clone_size_factor=3, mutate_constant=0.3)
         ga = GA_group_chromosome.GA(data3)
-        aisgeno = ais.run(function_evaluation=500)
-        geno2, fitness = ga.run(function_evaluation=500, population_size=100, mutation_rate=0.05)
+        aisgeno = ais.run(function_evaluation=2000)
+        geno2, fitness = ga.run(function_evaluation=2000, population_size=100, mutation_rate=0.05)
         writer.writerow({'GA': fitness, 'AIS': aisgeno.fitness})
