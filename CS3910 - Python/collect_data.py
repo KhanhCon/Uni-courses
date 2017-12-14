@@ -27,7 +27,7 @@ data3 = {"price": PRICE3,"stock": STOCK3,"piece": PIECE3,}
 
 print 5.51E-35 < 0.05
 
-with open('data10000.csv', 'wb') as csvfile:
+with open('data500test.csv', 'wb') as csvfile:
     fieldnames = ['GA', 'AIS']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writerow({'GA': 'GA', 'AIS': 'AIS'})

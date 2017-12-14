@@ -30,8 +30,8 @@ function [ eyes_detected_img ] = eyes_detect( face_img )
    eyes_slope_angle = 15.0;
    eyes_binary_img = two_eyes_rule(rm_img,hpadding,vpadding,eyes_ratio, max_orient_diff, eyes_slope_angle);
    %Draw box around the eyes
-   eyes_detected_img = draw_box( eyes_binary_img, face_img );
-   eyes_detected_img = filled_img;
+   eyes_detected_img = draw_box(eyes_binary_img, face_img );
+%       eyes_detected_img = dilated_img;
 
 end
 
@@ -92,26 +92,6 @@ function [slope_angle_match] = slope_angle_rule (comp1, comp2, eyes_slope_angle)
    slope_angle_match = slope_angle < eyes_slope_angle;
 end
 
-function [ dilated_img ] = dilate( edge_img )
-    %dilate Dilate img twice
-
-    SE = strel('disk', 3);
-    dilated_img = imdilate(edge_img,SE);
-    dilated_img = imdilate(dilated_img,SE);
-
-end
-
-
-function [ eroded_img ] = erode( filled_img )
-    %erode Erode image three times
-
-    SE = strel('disk', 3);
-    eroded_img = imerode(filled_img,SE);
-    eroded_img = imerode(eroded_img,SE);
-    eroded_img = imerode(eroded_img,SE);
-
-end
-
 function [ aspect_ratio_img ] = aspect_ratio_rule( img )
 % aspect_ratio: Keep components that have 0.8 < w/h < 4.0
 
@@ -129,6 +109,25 @@ function [ aspect_ratio_img ] = aspect_ratio_rule( img )
 
     aspect_ratio_img = ismember(labelmatrix(CC), idx_boundingbox);
     
+end
+
+function [ dilated_img ] = dilate( edge_img )
+    %dilate Dilate img twice
+
+    SE = strel('disk', 3);
+    dilated_img = imdilate(edge_img,SE);
+    dilated_img = imdilate(dilated_img,SE);
+
+end
+
+function [ eroded_img ] = erode( filled_img )
+    %erode Erode image three times
+
+    SE = strel('disk', 3);
+    eroded_img = imerode(filled_img,SE);
+    eroded_img = imerode(eroded_img,SE);
+    eroded_img = imerode(eroded_img,SE);
+
 end
 
 function [ angle_img ] = rm_large_orient( img, max_orientation )
