@@ -213,8 +213,8 @@ for k = 1 : length(final_stats)
     rectangle('Position', [BB(1),BB(2),BB(3),BB(4)], 'EdgeColor','r','LineWidth',2 ); 
 end
  out_file_name = strcat('eyes_detected/',file);
- imwrite(img_out,out_file_name);
-
+%  imwrite(img_out,out_file_name);
+imshow(img_out); title('final image');
 %{
     %orientation difference
 % orient_diff_CC = bwconncomp(size_img,4);
