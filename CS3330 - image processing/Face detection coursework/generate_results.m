@@ -1,6 +1,6 @@
- d = uigetdir(pwd, 'Select face_img folder');
+ d = uigetdir(pwd, 'Select face_img folder'); %Promt GUI for user to select folder
  files = dir(fullfile(d, '*.jpg'));
-% Display the names
+
     mkdir result/eyes_detect
     mkdir result/blob_extract
 for i = 1:length(files)

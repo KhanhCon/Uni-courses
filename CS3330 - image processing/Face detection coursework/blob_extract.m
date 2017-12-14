@@ -1,5 +1,6 @@
 
 function [blob_extracted] = blob_extract (img)
+% blob_extract: Extract blob before applying rules
 grey_img = rgb2gray(img);
 edge_img = edge(grey_img,'sobel');
 SE = strel('disk', 3);
