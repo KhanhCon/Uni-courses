@@ -402,7 +402,7 @@ class AIS:
             return population
 
         replacement_number = self.replacement_number if self.fe_count - function_evaluation > self.replacement_number else self.fe_count - function_evaluation
-        population[0:replacement_number] = [self.random_solution() for _ in xrange(0, self.clone_size_factor)]
+        population[0:replacement_number] = [self.random_solution() for _ in xrange(0, self.replacement_number)]
         population.sort(key=lambda x: x.fitness, reverse=True)
         return population
 
@@ -513,8 +513,8 @@ if __name__ == '__main__':
     }
 
     start_time = time.time()
-    ais = AIS(data3, replacement_number=35, population_size=50, clone_size_factor=4, mutate_constant=1.0)
-    geno = ais.run(function_evaluation=500)
+    ais = AIS(data3, replacement_number=25, population_size=50, clone_size_factor=3, mutate_constant=1.0)
+    geno = ais.run(function_evaluation=2000)
     total_time = time.time() - start_time
     ais.print_geno(geno)
     print("---GA runtime: %s seconds --- \n" % (total_time))

@@ -12,7 +12,7 @@ function [ eyes_detected_img ] = eyes_detect( face_img )
    filled_img = imcomplement(rm_small_cmp(negative_dilated_img, 300));
    %Erode the image three times
    eroded_img = erode(filled_img);
-   
+%    eroded_img = blob_extract (face_img, edge_detect_type);
    %Aspect ratio rule
    aspect_img = aspect_ratio_rule(eroded_img);
    
@@ -31,7 +31,7 @@ function [ eyes_detected_img ] = eyes_detect( face_img )
    eyes_binary_img = two_eyes_rule(rm_img,hpadding,vpadding,eyes_ratio, max_orient_diff, eyes_slope_angle);
    %Draw box around the eyes
    eyes_detected_img = draw_box(eyes_binary_img, face_img );
-%       eyes_detected_img = dilated_img;
+      
 
 end
 
@@ -116,7 +116,7 @@ function [ dilated_img ] = dilate( edge_img )
 
     SE = strel('disk', 3);
     dilated_img = imdilate(edge_img,SE);
-    dilated_img = imdilate(dilated_img,SE);
+     dilated_img = imdilate(dilated_img,SE);
 
 end
 

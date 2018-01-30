@@ -4,8 +4,10 @@ function [blob_extracted] = blob_extract (img)
 grey_img = rgb2gray(img);
 edge_img = edge(grey_img,'sobel');
 SE = strel('disk', 3);
-dilated_img = imdilate(edge_img,SE);
+%Dilate image twice
+dilated_img = imdilate(edge_img,SE); 
 dilated_img = imdilate(dilated_img,SE);
+%Inverse the dilated img to fill holes
 negative_dilated_img = imcomplement(dilated_img);
 CC = bwconncomp(negative_dilated_img,4);
 stats_first = regionprops(CC,'Area');
