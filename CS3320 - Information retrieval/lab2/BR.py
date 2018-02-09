@@ -30,7 +30,10 @@ def query_BR(postings, qtext):
     words = tokenize(qtext)
     res = None
     for w in words:
-        res = postings[w] if res==None else res & postings[w]
+        try:
+            res = postings[w] if res==None else res & postings[w]
+        except KeyError:
+            return {}
     return res
 
 def query_BR(postings, qtext):
@@ -40,5 +43,4 @@ def query_BR(postings, qtext):
     return res
 
 postings = indextextfiles_BR('docs')
-print(query_BR(postings,'england football defeat'))
-
+print(query_BR(postings,'england football defeat vietnam'))

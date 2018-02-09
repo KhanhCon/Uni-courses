@@ -1,0 +1,6 @@
+https://www.quora.com/What-is-the-algorithm-data-structure-used-by-Lucene-to-compute-the-term-frequency-of-documents
+
+
+Python 3
+
+https://www.cl.cam.ac.uk/teaching/1314/InfoRtrv/lecture4.pdf
