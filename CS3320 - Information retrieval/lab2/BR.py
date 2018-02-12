@@ -42,5 +42,7 @@ def query_BR(postings, qtext):
     res = set.intersection(*allpostings)
     return res
 
-postings = indextextfiles_BR('docs')
-print(query_BR(postings,'england football defeat vietnam'))
+if __name__ == "__main__":
+    postings = indextextfiles_BR('docs')
+    print(len(query_BR(postings, 'defeat')))
+
