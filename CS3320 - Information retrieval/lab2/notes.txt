@@ -3,4 +3,8 @@ https://www.quora.com/What-is-the-algorithm-data-structure-used-by-Lucene-to-com
 
 Python 3
 
+Slide from Cambridge
 https://www.cl.cam.ac.uk/teaching/1314/InfoRtrv/lecture4.pdf
+
+Easy implementation
+https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/
