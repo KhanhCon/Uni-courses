@@ -44,5 +44,5 @@ def query_BR(postings, qtext):
 
 if __name__ == "__main__":
     postings = indextextfiles_BR('docs')
-    print(len(query_BR(postings, 'defeat')))
+    print(len(query_BR(postings, 'England')))
 
