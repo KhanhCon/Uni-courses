@@ -120,15 +120,16 @@ def query_RR2(query, normalizedDoc, documentFrequencies):
             if term in normalizedDoc[docID]:
                 dotProduct += vectorQuery[term] * normalizedDoc[docID][term]
         vectorDocMagnitude = math.sqrt(sum(map(lambda x: x * x, normalizedDoc[docID].values())))
-        if vectorQueryMagnitude != 0:
-            cosineSimilarity = dotProduct
-                               # *vectorDocMagnitude)
-        else:
-            cosineSimilarity = 0.0
+        cosineSimilarity = dotProduct
+        # if vectorQueryMagnitude != 0:
+        #     cosineSimilarity = dotProduct
+        #                        # *vectorDocMagnitude)
+        # else:
+        #     cosineSimilarity = 0.0
         rank.append((cosineSimilarity, docID))
         # heapq.heappush(rank, (-cosineSimilarity, docID))
     # return sorted(rank, key=lambda x:x[0], reverse=True)[:10]
-    return heapq.nlargest(10, rank)
+    return [x[1] for x in heapq.nlargest(10, rank)]
     # return [heapq.heappop(rank)[1] for i in range(10)]
 
 ############# ABOVE IS THE FINAL VERSION
@@ -232,5 +233,9 @@ if __name__ == "__main__":
     # print(list(map(lambda x: x[1], query_RR('Blackburn scotland', normalizedDOCs, documentFrequencies))))
     print(query_RR('England played very well', normalizedDOCs, documentFrequencies))
     print(query_RR('federer australian wimbledon', normalizedDOCs, documentFrequencies))
+    print("queryRR2")
+    print(query_RR2('England played very well', normalizedDOCs, documentFrequencies))
+    print(query_RR2('federer australian wimbledon', normalizedDOCs, documentFrequencies))
+
     #
     # print('going' in s)
