@@ -74,10 +74,10 @@ def vector_doctf(path):
 
 def vector_doclf(path, docFrequencies):
     vectorDoctf = vector_doctf(path)
-    N = len(vectorDoctf)
-    for docID in range(len(vectorDoctf)):
-        for term in vectorDoctf[docID]:
-            vectorDoctf[docID][term] = (vectorDoctf[docID][term]) #*log(N/docFrequencies[term], 10) comment this out
+    # N = len(vectorDoctf)
+    # for docID in range(len(vectorDoctf)):
+    #     for term in vectorDoctf[docID]:
+    #         vectorDoctf[docID][term] = (vectorDoctf[docID][term]) #*log(N/docFrequencies[term], 10) comment this out
     return vectorDoctf
 
 def indextextfiles_RR(path, docFrequencies):
