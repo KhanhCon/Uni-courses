@@ -17,9 +17,20 @@ def tokenize(text):
     return re.split(DELIM, text.lower())
 
 
+
 def document_frequencies(path):
+    """
+    Store document frequency in a dictionary.
+
+    dictionary[term] returns document frequency of a term
+
+    :param path: the path to the directory
+    :return: a dictionary that contains term-document frequency
+    """
+
     N = len(sorted(os.listdir(path)))
-    docFrequencies = {}
+    docFrequencies = {}  # Store document frequencies in a dictionary
+    # The same as how we create a posting dictionary for BR
     for docID in range(N):
         s = readfile(path, docID)
         words = tokenize(s)
@@ -30,212 +41,115 @@ def document_frequencies(path):
                 else:
                     docFrequencies[w].add(docID)
 
+    # Go through the dictionary and change the values from 'set' to 'len(set)'
     for w in docFrequencies:
         docFrequencies[w] = len(docFrequencies[w])
 
     return docFrequencies
 
-
-def vectorize_query(query, docFrequencies):
-    words = tokenize(query)
-    vectorQueryIDF = {}
+def vectorise_doctf(doc):
+    """
+    :param doc: document to be vectorised
+    :return: vectorised document represented witha  dictionary
+    """
+    words = tokenize(doc)  # Split the document in to words
+    vectorised_doc = {}  # Vector is represented with a dictionary where the key-value pair is word-termFrequency
+    # Go through the document
     for w in words:
         if w != '':
-            if w not in vectorQueryIDF:
-                # postings[w] = numpy.zeros(N)
-                vectorQueryIDF[w] = 1.0
+            if w not in vectorised_doc:
+                vectorised_doc[w] = 1.0  # term frequency is 1 if the word is not already in the dictionary
             else:
-                vectorQueryIDF[w] += 1.0
-    N = 737
+                vectorised_doc[w] += 1.0  # Add 1 to term frequency if the word is already in the dicitonary
+    return vectorised_doc
+
+
+def normalise_vector(vector):
+    """
+    This function normalise a vector then return it
+
+    :param vector: a document vector
+    :return: normalised vector
+    """
+    magnitude = math.sqrt(sum(map(lambda x: x * x, vector.values())))  # Calculate vector's magnitude (length)
+    # Go through the dictionary any divide the weight (term frequency) by the vector's length
+    for term in vector:
+        vector[term] = vector[term] / magnitude  # tf/length
+    return vector
+
+
+def indextextfiles_RR(path):
+    """
+    Index text files and return a dictionary
+    dictionary[docID] returns the corresponding document's normalised vector
+
+    :param path: path to the directory
+    :return: dictionary of documents and their normalised vector
+    """
+    N = len(os.listdir(path))
+    normalised_documents = {}  # dictionary to store all the normalised documents
+    # Go through the directory
+    for docID in range(N):
+        doc = readfile(path, docID)  # Get document with the ID
+        vectorised_doc = vectorise_doctf(doc)  # Doc -> vector
+        normalised_documents[docID] = normalise_vector(
+            vectorised_doc)  # normalise the vector then put it into the dictionary
+    return normalised_documents
+
+
+def vectorise_query(query, docFrequencies, numberOfDocuments):
+    """
+    This function turns a query into a vector
+
+    :param query: the query string
+    :param docFrequencies: document frequency dictionary
+    :param numberOfDocuments: total number of documents
+    :return:
+    """
+    vectorQueryIDF = vectorise_doctf(query)  # Turn the query into a vector with raw term frequency as weight
+    # Go through the vector then apply the IDF formula to calculate the weight
     for term in vectorQueryIDF:
-        if term in docFrequencies:
-            vectorQueryIDF[term] = vectorQueryIDF[term]*log(N/docFrequencies[term], 10)
-        else:
+        if term in docFrequencies:  # if the term is found in any of the documents
+            vectorQueryIDF[term] = vectorQueryIDF[term] * log(numberOfDocuments / docFrequencies[term], 10)
+        else:  # if the term is NOT found in any of the documents, set its weight to 0.0
             vectorQueryIDF[term] = 0.0
     return vectorQueryIDF
 
-def vector_doctf(path):
-    N = len(sorted(os.listdir(path)))
-    postings = {}
-    for docID in range(N):
-        s = readfile(path, docID)
-        words = tokenize(s)
-        postings[docID] = {}
-        for w in words:
-            if w != '':
-                if w not in postings[docID]:
-                    # postings[w] = numpy.zeros(N)
-                    postings[docID][w] = 1.0
-                else:
-                    postings[docID][w] += 1.0
 
-    return postings
+def cosine_similarity(vector_query, normalised_doc):
+    """
+    Calculate the cosine similarity between a query and a document
+
+    :param vector_query: vectorised query
+    :param normalised_doc: normalised document
+    :return:
+    """
+    dotProduct = 0  # Since the document is normalised, the cosine similarity is the dot product
+    for term in vector_query:
+        if term in normalised_doc:  # if the term is found in this document
+            dotProduct += vector_query[term] * normalised_doc[term]  # Calculate the dot product
+    return dotProduct
 
 
-def vector_doclf(path, docFrequencies):
-    vectorDoctf = vector_doctf(path)
-    # N = len(vectorDoctf)
-    # for docID in range(len(vectorDoctf)):
-    #     for term in vectorDoctf[docID]:
-    #         vectorDoctf[docID][term] = (vectorDoctf[docID][term]) #*log(N/docFrequencies[term], 10) comment this out
-    return vectorDoctf
+def query_RR(query, normalisedDocs, documentFrequencies):
+    """
+    :param query: query string
+    :param normalisedDocs: dictionary of normalised documents vector
+    :param documentFrequencies: dictionary of document frequency of terms
+    :return:
+    """
+    vectorised_query = vectorise_query(query, documentFrequencies, len(normalisedDocs))  # vectorise the query
+    rank = []  # A list to store all the ranked documents
+    for docID in normalisedDocs:
+        cosineSimilarity = cosine_similarity(vectorised_query, normalisedDocs[docID]) # calculate cosine similarity
+        rank.append((cosineSimilarity, docID))  # append tuple with the cosine similarity (dot product) and the docID to the list
 
-def indextextfiles_RR(path, docFrequencies):
-    vectorDoclf = vector_doclf(path, docFrequencies)
-    for docID in range(len(vectorDoclf)):
-        coef = math.sqrt(sum(map(lambda x: x * x, vectorDoclf[docID].values())))
-        for term in vectorDoclf[docID]:
-            vectorDoclf[docID][term] = vectorDoclf[docID][term] / coef
-    return vectorDoclf
-
-def query_RR(query, normalizedDoc, documentFrequencies, k=10):
-
-    vectorQuery = vectorize_query(query, documentFrequencies)
-    vectorQueryMagnitude = math.sqrt(sum(map(lambda x: x * x, vectorQuery.values())))
-    rank = []
-    for docID in normalizedDoc:
-        dotProduct = 0.0
-        for term in vectorQuery:
-            if term in normalizedDoc[docID]:
-                dotProduct += vectorQuery[term] * normalizedDoc[docID][term]
-        vectorDocMagnitude = math.sqrt(sum(map(lambda x: x * x, normalizedDoc[docID].values())))
-        if vectorQueryMagnitude != 0:
-            cosineSimilarity = -dotProduct
-                               # *vectorDocMagnitude)
-        else:
-            cosineSimilarity = 0.0
-        # rank.append((cosineSimilarity, docID))
-        heapq.heappush(rank, (cosineSimilarity, docID))
-    # return heapq.nlargest(10, rank)
-    return [heapq.heappop(rank)[1] for i in range(k)]
-
-def query_RR2(query, normalizedDoc, documentFrequencies):
-    #Use this because same with teacher
-    vectorQuery = vectorize_query(query, documentFrequencies)
-    vectorQueryMagnitude = math.sqrt(sum(map(lambda x: x * x, vectorQuery.values())))
-    rank = []
-    for docID in normalizedDoc:
-        dotProduct = 0
-        for term in vectorQuery:
-            if term in normalizedDoc[docID]:
-                dotProduct += vectorQuery[term] * normalizedDoc[docID][term]
-        vectorDocMagnitude = math.sqrt(sum(map(lambda x: x * x, normalizedDoc[docID].values())))
-        cosineSimilarity = dotProduct
-        # if vectorQueryMagnitude != 0:
-        #     cosineSimilarity = dotProduct
-        #                        # *vectorDocMagnitude)
-        # else:
-        #     cosineSimilarity = 0.0
-        rank.append((cosineSimilarity, docID))
-        # heapq.heappush(rank, (-cosineSimilarity, docID))
-    # return sorted(rank, key=lambda x:x[0], reverse=True)[:10]
-    return [x[1] for x in heapq.nlargest(10, rank)]
-    # return [heapq.heappop(rank)[1] for i in range(10)]
-
-############# ABOVE IS THE FINAL VERSION
-#
-# def indextextfiles_RR(path):
-#     N = len(sorted(os.listdir(path)))
-#     postings = {}
-#     for docID in range(N):
-#         s = readfile(path, docID)
-#         words = tokenize(s)
-#         for w in words:
-#             if w != '':
-#                 if w not in postings:
-#                     # postings[w] = numpy.zeros(N)
-#                     postings[w] = {}
-#                     postings[w][docID] = 1.0
-#                 else:
-#                     if docID in postings[w]:
-#                         postings[w][docID] += 1.0
-#                     else:
-#                         postings[w][docID] = 1.0
-#     return postings
-# def idf(term, postings):
-#     # numberOfDocuments = len(sorted(os.listdir(path)))
-#     # documentFrequency = 0
-#     # for docID in range(numberOfDocuments):
-#     #     if term.lower() in tokenize(readfile(path, docID)):
-#     #         documentFrequency = documentFrequency + 1
-#     #
-#     # if documentFrequency > 0:
-#     #     return 1.0 + log(float(numberOfDocuments) / documentFrequency)
-#     # else:
-#     #     return 1.0
-#
-#     if term not in postings:
-#         return 1.0
-#     else:
-#         # documentFrequency = numpy.count_nonzero(postings[term])  # find items that are not 0
-#         # print(numpy.nonzero(postings[term]))
-#         documentFrequency = len(postings[term])
-#         numberOfDocuments = len(postings)
-#         return log(float(numberOfDocuments) / documentFrequency, 10)
-# def tf_doc(term, postings, docID):
-#     # if postings[term][docID] == 0.0:
-#     if term not in postings:
-#         return 0.0
-#     elif docID not in postings[term]:
-#         return 0.0
-#     else:
-#         return 1.0 + log(postings[term][docID], 10)
-# def tf_query(term, text):
-#     words = tokenize(text)
-#     if term.lower() not in words:
-#         return 0.0
-#     else:
-#         tf_raw = 0.0
-#         for w in words:
-#             if w != '':
-#                 if term == w:
-#                     tf_raw += 1
-#         return 1.0 + log(tf_raw, 10)
-# def df_idf(term, query, postings):
-#     return tf_query(term, query) * idf(term, postings)
-# def query_RR1(postings, query):
-#     N = len(sorted(os.listdir('docs')))  # number of documents
-#     words = tokenize(query)
-#     query_weight = {}
-#     for w in words:
-#         query_weight[w] = df_idf(w, query, postings)
-#
-#     rank = []
-#     for docID in range(N):
-#         doc_weights = {}
-#         for w in words:
-#             doc_weights[w] = tf_doc(w, postings, docID)
-#         coef = math.sqrt(sum(map(lambda x: x * x, doc_weights.values())))
-#         if coef != 0:
-#             for w in doc_weights:
-#                 doc_weights[w] = doc_weights[w] / coef
-#         score = 0
-#         for w in words:
-#             score += query_weight[w] * doc_weights[w]
-#         rank.append((score, docID))
-#     return heapq.nlargest(10, rank)
+    return [x[1] for x in heapq.nlargest(10, rank)]  # Return the top 10 tuples with the largest cosine similarity
 
 
 if __name__ == "__main__":
-    # print(1 + log(2,10)) #tf
-    # print(1.0+log((float(1000000)/1000),10))    #idf
-    # print(numpy.zeros(2))
-
-    # print(postings['defeat'][610])
-    # print(idf('defeat', postings))
-    # print(tf_query('football', 'football is football'))
-    # postings = indextextfiles_RR('docs')
-    # print(query_RR(postings,'football england defeat') == query_RR(postings,'football england defeat vietnam'))
-    # documentFrequencies = document_frequencies('docs')
-    # print(documentFrequencies['defeat'])
     documentFrequencies = document_frequencies('docs')
-    normalizedDOCs = indextextfiles_RR('docs', documentFrequencies)
-    # print(list(map(lambda x: x[1], query_RR('Blackburn scotland', normalizedDOCs, documentFrequencies))))
+    normalizedDOCs = indextextfiles_RR('docs')
+
     print(query_RR('England played very well', normalizedDOCs, documentFrequencies))
     print(query_RR('federer australian wimbledon', normalizedDOCs, documentFrequencies))
-    print("queryRR2")
-    print(query_RR2('England played very well', normalizedDOCs, documentFrequencies))
-    print(query_RR2('federer australian wimbledon', normalizedDOCs, documentFrequencies))
-
-    #
-    # print('going' in s)
