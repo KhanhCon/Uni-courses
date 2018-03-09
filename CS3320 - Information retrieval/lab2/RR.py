@@ -6,7 +6,7 @@ import math, heapq
 
 def readfile(path, docid):
     files = sorted(os.listdir(path))
-    f = open(os.path.join(path, files[docid]), 'r', encoding='latin-1')
+    f = open(os.path.join(path, files[docid]), 'r')
     s = f.read()
     f.close()
     return s
@@ -153,3 +153,5 @@ if __name__ == "__main__":
 
     print(query_RR('England played very well', normalizedDOCs, documentFrequencies))
     print(query_RR('federer australian wimbledon', normalizedDOCs, documentFrequencies))
+	
+
