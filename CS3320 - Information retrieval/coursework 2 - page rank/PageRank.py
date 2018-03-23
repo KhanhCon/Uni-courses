@@ -70,4 +70,4 @@ if __name__ == "__main__":
     print(pagerank(edges, 5000))
 
 #Question 3: pagerank requirese less
-#Question 4: No you cant
+#Question 4: No you cant increase score by putting more links
