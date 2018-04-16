@@ -17,7 +17,6 @@ def tokenize(text):
     return re.split(DELIM, text.lower())
 
 
-
 def document_frequencies(path):
     """
     Store document frequency in a dictionary.
@@ -30,7 +29,9 @@ def document_frequencies(path):
 
     N = len(sorted(os.listdir(path)))
     docFrequencies = {}  # Store document frequencies in a dictionary
-    # The same as how we create a posting dictionary for BR
+    # The same as how we create a posting dictionary for BR.
+    # The length of the set will be the document frequency of the term
+
     for docID in range(N):
         s = readfile(path, docID)
         words = tokenize(s)
@@ -41,11 +42,12 @@ def document_frequencies(path):
                 else:
                     docFrequencies[w].add(docID)
 
-    # Go through the dictionary and change the values from 'set' to 'len(set)'
+    # Go through the dictionary and change the values from 'set' to 'len(set)'. This will give us the document frequency
     for w in docFrequencies:
         docFrequencies[w] = len(docFrequencies[w])
 
     return docFrequencies
+
 
 def vectorise_doctf(doc):
     """
@@ -60,7 +62,7 @@ def vectorise_doctf(doc):
             if w not in vectorised_doc:
                 vectorised_doc[w] = 1.0  # term frequency is 1 if the word is not already in the dictionary
             else:
-                vectorised_doc[w] += 1.0  # Add 1 to term frequency if the word is already in the dicitonary
+                vectorised_doc[w] += 1.0  # Add 1 to term frequency if the word is already in the dictionary
     return vectorised_doc
 
 
@@ -86,8 +88,8 @@ def indextextfiles_RR(path):
     :param path: path to the directory
     :return: dictionary of documents and their normalised vector
     """
-    N = len(os.listdir(path))
     normalised_documents = {}  # dictionary to store all the normalised documents
+    N = len(os.listdir(path))  # number of documents in the directory
     # Go through the directory
     for docID in range(N):
         doc = readfile(path, docID)  # Get document with the ID
@@ -138,11 +140,12 @@ def query_RR(query, normalisedDocs, documentFrequencies):
     :param documentFrequencies: dictionary of document frequency of terms
     :return:
     """
-    vectorised_query = vectorise_query(query, documentFrequencies, len(normalisedDocs))  # vectorise the query
+    vectorised_query = vectorise_query(query, documentFrequencies, len(normalisedDocs))  # represent query as vector
     rank = []  # A list to store all the ranked documents
     for docID in normalisedDocs:
-        cosineSimilarity = cosine_similarity(vectorised_query, normalisedDocs[docID]) # calculate cosine similarity
-        rank.append((cosineSimilarity, docID))  # append tuple with the cosine similarity (dot product) and the docID to the list
+        cosineSimilarity = cosine_similarity(vectorised_query, normalisedDocs[docID])  # calculate cosine similarity
+        rank.append((cosineSimilarity,
+                     docID))  # append tuple with the cosine similarity (dot product) and the docID to the list
 
     return [x[1] for x in heapq.nlargest(10, rank)]  # Return the top 10 tuples with the largest cosine similarity
 
@@ -153,5 +156,3 @@ if __name__ == "__main__":
 
     print(query_RR('England played very well', normalizedDOCs, documentFrequencies))
     print(query_RR('federer australian wimbledon', normalizedDOCs, documentFrequencies))
-	
-
