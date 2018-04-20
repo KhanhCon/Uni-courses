@@ -53,27 +53,43 @@ def transition_matrix(edges):
 
     return matrix, nodes
 
+
+#
+# P
+#
+# Q = np.ones_like(P) / len(nodes)
+#
+# a = teleport probability
+#
+# Pnew = (1-a)*P + a*Q
+
+
+
+
 def pagerank(edges, iters, tele_prob = 0):
     #Transition matrix
     matrixP, nodes = transition_matrix(edges)
-    # an arbitrary probability vector (1/Ns where N is the number of all states)
-    vector = np.array([1.0/len(nodes)]*len(nodes))
+    Q = np.ones_like(matrixP) / len(nodes) #Matrix with values 1/n
+    matrixPnew = (1-tele_prob)*matrixP + tele_prob*Q # New P matrix with teleport probability
+    vector = np.array([1.0/len(nodes)]*len(nodes)) # an arbitrary probability vector (1/Ns where N is the number of all states)
     for i in range(iters):
-        vector = vector.dot(matrixP) #Mulitply matrix and vector
+        vector = vector.dot(matrixPnew) #Mulitply matrix and vector
     return vector
 
 
 if __name__ == "__main__":
     edges = {(0, 2 ), (1,1),  (1, 2), (2, 0), (2, 2), (2, 3), (3, 3), (3,4), (4,6), (5,5), (5,6), (6,3), (6,4), (6,6)}
 
-    print(random_walk(edges, 0.1, 80000))
-    print(pagerank(edges, 1000))
-    print(pagerank(edges, 2000))
-    print(pagerank(edges, 5000))
-    print(pagerank(edges, 6000))
+    iter = 5000000
+    print(random_walk(edges, 0.1, iter) == random_walk(edges, 0.1, iter))
+    p1 = pagerank(edges, 200000, 0.1)
+    p2 = pagerank(edges, 200000, 0.1)
+    print(p1)
+    print(p2)
+    print(p1==p2)
 
     #In crease outlinks from node 1.
-    edges_increase_out = {(0, 1), (1, 0), (1, 2),(1,3), (2, 0), (2, 2), (2, 3), (3, 3)}
+    edges_increase_out = {(0, 2 ), (1,1),  (1, 2), (1,3), (1,4), (2, 0), (2, 2), (2, 3), (3, 3), (3,4), (4,6), (5,5), (5,6), (6,3), (6,4), (6,6)}
 
     print("Increase outlinks from node 1: %s" %random_walk(edges_increase_out, 0.1, 100000))
 
@@ -81,5 +97,5 @@ if __name__ == "__main__":
     #Question 3: As we can see above, Pagerank requires significantly less iterration than randomwalk
     # in order to reach steady state ( 45000 compares to 5000)
 
-    #Question 4: No you cant influence score by chaning the number of out-links it contains.
+    #Question 4: No you cant influence score of your own page by chaning the number of out-links it contains.
     # The score for node 1 stays the same when we put more out-links into it.
