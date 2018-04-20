@@ -4,12 +4,13 @@ import numpy as np
 #This function takes a set of edges then return all the nodes
 def get_node(edges):
     nodes = set()
+    #Get the nodes from the edges then put them in a set to remove duplicate
     for edge in edges:
         nodes.add(edge[0])
         nodes.add(edge[1])
     return nodes
 
-def random_walk(edges, tele_prob, iters):
+def random_walk(edges,iters, tele_prob):
     nodes = get_node(edges)
     histogram = {}
     for node in nodes:
@@ -54,23 +55,11 @@ def transition_matrix(edges):
     return matrix, nodes
 
 
-#
-# P
-#
-# Q = np.ones_like(P) / len(nodes)
-#
-# a = teleport probability
-#
-# Pnew = (1-a)*P + a*Q
-
-
-
-
-def pagerank(edges, iters, tele_prob = 0):
+def pagerank(edges, iters, tele_prob):
     #Transition matrix
     matrixP, nodes = transition_matrix(edges)
     Q = np.ones_like(matrixP) / len(nodes) #Matrix with values 1/n
-    matrixPnew = (1-tele_prob)*matrixP + tele_prob*Q # New P matrix with teleport probability
+    matrixPnew = (1.0-tele_prob)*matrixP + tele_prob*Q # New P matrix with teleport probability
     vector = np.array([1.0/len(nodes)]*len(nodes)) # an arbitrary probability vector (1/Ns where N is the number of all states)
     for i in range(iters):
         vector = vector.dot(matrixPnew) #Mulitply matrix and vector
@@ -78,24 +67,26 @@ def pagerank(edges, iters, tele_prob = 0):
 
 
 if __name__ == "__main__":
-    edges = {(0, 2 ), (1,1),  (1, 2), (2, 0), (2, 2), (2, 3), (3, 3), (3,4), (4,6), (5,5), (5,6), (6,3), (6,4), (6,6)}
+    edges = {(0, 2 ), (1,1),  (1, 2), (2, 0), (2, 2), (2, 3), (3, 3), (3,4)}
 
-    iter = 5000000
-    print(random_walk(edges, 0.1, iter) == random_walk(edges, 0.1, iter))
-    p1 = pagerank(edges, 200000, 0.1)
-    p2 = pagerank(edges, 200000, 0.1)
+    iter = 50000
+    print(random_walk(edges, iter, 0.1))
+    print(random_walk(edges, iter, 0.1) == random_walk(edges, iter + 5000, 0.1))
+
+    p1 = pagerank(edges, 4000, 0.1)
+    p2 = pagerank(edges, 5000, 0.1)
     print(p1)
     print(p2)
     print(p1==p2)
 
     #In crease outlinks from node 1.
-    edges_increase_out = {(0, 2 ), (1,1),  (1, 2), (1,3), (1,4), (2, 0), (2, 2), (2, 3), (3, 3), (3,4), (4,6), (5,5), (5,6), (6,3), (6,4), (6,6)}
+    edges_increase_out = {(0, 2 ), (1,1),  (1, 2), (1,3), (1,4), (2, 0), (2, 2), (2, 3), (3, 3), (3,4)}
 
-    print("Increase outlinks from node 1: %s" %random_walk(edges_increase_out, 0.1, 100000))
+    print("Increase outlinks from node 1: %s" %random_walk(edges_increase_out, 80000, 0.1))
 
 
     #Question 3: As we can see above, Pagerank requires significantly less iterration than randomwalk
-    # in order to reach steady state ( 45000 compares to 5000)
+    # in order to reach steady state ( 50000 for randomwalk compares to 4000 for page rank)
 
     #Question 4: No you cant influence score of your own page by chaning the number of out-links it contains.
-    # The score for node 1 stays the same when we put more out-links into it.
+    # The score for node 1 stays the same when we put more out-links into it. (0.07)
