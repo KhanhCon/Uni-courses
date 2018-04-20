@@ -64,9 +64,9 @@ def pagerank(edges, iters, tele_prob = 0):
 
 
 if __name__ == "__main__":
-    edges = {(0, 1), (1, 2), (2, 0), (2, 2), (2, 3), (3, 3)}
+    edges = {(0, 2 ), (1,1),  (1, 2), (2, 0), (2, 2), (2, 3), (3, 3), (3,4), (4,6), (5,5), (5,6), (6,3), (6,4), (6,6)}
 
-    print(random_walk(edges, 0.1, 45000))
+    print(random_walk(edges, 0.1, 80000))
     print(pagerank(edges, 1000))
     print(pagerank(edges, 2000))
     print(pagerank(edges, 5000))
